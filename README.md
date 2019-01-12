@@ -3,6 +3,7 @@
 1. Clone 
 2. Build
 3. Run
+4. Open browser to `http://DOCKERHOST:9999`
 
 ```bash
 git clone https://github.com/ludeeus/custom-installer.git
