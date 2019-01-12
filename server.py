@@ -38,13 +38,17 @@ async def installed(request):
     if not components:
         content += static.NOCOMPONENTS
     for component in components:
+        update = ''
         comp = component
-        version = compdata[component].get('remote')
+        version = compdata[component].get('version')
+        installedver = resp[component].get('local')
+        if version != installedver:
+            update = static.UPDATE
         description = compdata[component].get('description', '')
         repo = compdata[component].get('visit_repo')
         if description is not None and ':' in description:
             description = description.split(':')[-1]
-        content += static.CARD.format(comp=comp,
+        content += static.CARD.format(comp=comp, update=update,
                                       version=version,
                                       content=description,
                                       target='/component/'+comp,
@@ -71,7 +75,7 @@ async def html(request):
         repo = components[component].get('visit_repo')
         if description is not None and ':' in description:
             description = description.split(':')[-1]
-        content += static.CARD.format(comp=comp,
+        content += static.CARD.format(comp=comp, update='',
                                       version=version,
                                       content=description,
                                       target='/component/'+comp,
@@ -91,36 +95,47 @@ async def compview(request):
     content += '<main>'
 
     components = await get_data()
+    hasupdate = False
+    update = ''
     compdata = await get_comp_data(element)
-    installed = compdata.get('local')
+    installedver = compdata.get('local')
     component = components[element]
     comp = element
     version = component.get('version')
     description = component.get('description', '')
     repo = component.get('visit_repo')
+    extra = static.REPO.format(repo=repo)
+    target = '/component/' + comp + '/install'
     if description is not None and ':' in description:
         description = description.split(':')[-1]
-    if installed:
-        button = 'Update'
-        extra = static.EXTRA.format(notes=component.get('changelog'), uninstall='/component/'+comp+'/uninstall')
+    if installedver:
+        if installedver != version:
+            hasupdate = True
+        if hasupdate:
+            button = 'Update'
+            update = static.UPDATE
+            extra += static.NOTES.format(notes=component.get('changelog'))
+        else:
+            button = 'Check for update'
+            target = '/component/' + comp
+        extra += static.UNINSTALL.format(uninstall='/component/'+comp+'/uninstall')
     else:
-        installed = 'N/A'
+        installedver = 'N/A'
         button = 'Install'
-        extra = ''
-    description += static.CONTENT.format(version=version, installed=installed)
-    content += static.CARD.format(comp=comp,
+    description += static.CONTENT.format(version=version, installed=installedver)
+    content += static.CARD.format(comp=comp, update=update,
                                   version=version,
                                   content=description,
-                                  target='/component/'+comp+'/install',
+                                  target=target,
                                   button=button,
-                                  repo=repo, extra=extra)
+                                  extra=extra)
     content += '</main>'
     content += static.FOOTER
     return web.Response(body=content, content_type="text/html")
 
 async def json(request):
     """Serve the response as JSON."""
-    json_data = await get_data()
+    json_data = custom_components.get_sensor_data(PATH, True, None)[0]
     return web.json_response(json_data)
 
 async def compjson(request):
@@ -134,12 +149,10 @@ async def get_comp_data(name=None):
     data = custom_components.get_sensor_data(PATH, True, None)[0]
     return data[name]
 
-async def get_data(name=None):
+async def get_data():
     """Get version data."""
     url = 'https://raw.githubusercontent.com/custom-components/information/master/repos.json'
     data = requests.get(url).json()
-
-    print("Request sucessful:", bool(data))
 
     if data:
         value = data
@@ -155,7 +168,7 @@ if __name__ == "__main__":
     APP = web.Application()
     APP.router.add_route('GET', r'/', installed, name='installed')
     APP.router.add_route('GET', r'/components', html, name='html')
-    APP.router.add_route('GET', r'/json', compjson, name='json')
+    APP.router.add_route('GET', r'/json', json, name='json')
     APP.router.add_route('GET', r'/component/{element}', compview, name='compview')
     APP.router.add_route('GET', r'/component/{element}/install', install, name='install')
     APP.router.add_route('GET', r'/component/{element}/uninstall', uninstall, name='uninstall')

@@ -26,7 +26,8 @@ STYLE = """
           margin: auto;
         }
         .fa {
-            font-size:18px !important;
+            font-size:20px !important;
+            color: #ffab40;
         }
         code {
             font-family: roboto !important;
@@ -56,7 +57,7 @@ HEADER = """
 <header>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">&nbsp;&nbsp;&nbsp;Custom Components</a>
+      <a href="/" class="brand-logo">&nbsp;&nbsp;&nbsp;Custom Components</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="/">Installed Custom Components</a></li>
         <li><a href="/components">"The Store"</a></li>
@@ -70,13 +71,12 @@ CARD = """
   <div class="row">
     <div class="col s12">
       <div class="card blue-grey darken-1">
-        <div class="card-content white-text" id="{comp}">
-          <a href="#{comp}"><span class="card-title">{comp}</span></a>
+        <div class="card-content white-text">
+          <span class="card-title">{update}{comp}</span>
           <p>{content}</p>
         </div>
         <div class="card-action">
           <a href="{target}">{button}</a>
-          <a href="{repo}" target="_blank">Repository</a>
           {extra}
         </div>
       </div>
@@ -86,11 +86,18 @@ CARD = """
 
 FOOTER = """
 <footer class="page-footer blue-grey darken-1">
-  <div class="container" style="padding-bottom: 15px;;">
-    <i>This site is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
+  <div class="container style="padding-bottom: 15px;">
+    <a href="https://www.buymeacoffee.com/ludeeus" target="_blank" style="color: #fff";><i class="fa fa-coffee"></i>&nbsp;Buy me a coffee :D</i></a>
+  </div>
+  <div class="container" style="padding-bottom: 15px;">
+    <i>This site and the items here is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
   </div>
 </footer>
 """
+
+REPO = '<a href="{repo}" target="_blank">Repository</a>'
+
+UPDATE = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
 
 CONTENT = """
 </br>
@@ -99,10 +106,9 @@ Installed version: {installed}</br>
 Published version: {version}</br>
 """
 
-EXTRA = """
-<a href="{notes}" target="_blank">Release notes</a>
-<a href="{uninstall}" class="uninstall">Uninstall</a>
-"""
+UNINSTALL = '<a href="{uninstall}" class="uninstall">Uninstall</a>'
+
+NOTES = '<a href="{notes}" target="_blank">Release notes</a>'
 
 NOCOMPONENTS = """
   <div class="row">
