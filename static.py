@@ -58,7 +58,7 @@ HEADER = """
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">&nbsp;&nbsp;&nbsp;Custom Components</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="/">Installed Components</a></li>
+        <li><a href="/">Installed Custom Components</a></li>
         <li><a href="/components">"The Store"</a></li>
       </ul>
     </div>
