@@ -115,13 +115,14 @@ async def component_view(request):
 
         button = '<a href="{target}" {extra}>{text}</a>'
 
-        has_update = components[component]['has_update']
-        installed_version = components[component]['local_version']
-        published_version = components[component]['version']
-        installed = components[component]['installed']
-        repository = components[component]['visit_repo']
         changelog = components[component]['changelog']
         description = components[component]['description']
+        has_update = components[component]['has_update']
+        image_link = components[component].get('image_link')
+        installed = components[component]['installed']
+        installed_version = components[component]['local_version']
+        published_version = components[component]['version']
+        repository = components[component]['visit_repo']
 
         button1 = button.format(target='/component/'+component+'/install',
                                 extra='', text='INSTALL')
@@ -158,6 +159,11 @@ async def component_view(request):
         if installed_version is None:
             installed_version = ''
 
+        if image_link:
+            image = '<img src="{image_link}">'.format(image_link=image_link)
+        else:
+            image = ''
+
         content = """
             <div class="row">
             <div class="col s12">
@@ -165,7 +171,8 @@ async def component_view(request):
                 <div class="card-content white-text">
                     <span class="card-title">{update}{component}</span>
                     <p>
-                    {description}</br></br>
+                    {description}</br>
+                    {image}</br>
                     Installed version: {installed_version}</br>
                     Published version: {published_version}</br>
                     </p>
@@ -180,7 +187,7 @@ async def component_view(request):
             </div>
             </div>
         """.format(update=update, component=component, description=description,
-                   installed_version=installed_version,
+                   image=image, installed_version=installed_version,
                    published_version=published_version, button1=button1,
                    button2=button2, button3=button3, button4=button4)
     else:
