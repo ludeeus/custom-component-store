@@ -1,4 +1,4 @@
-# custom-installer
+# custom-component-store
 
 1. Clone 
 2. Build
@@ -6,10 +6,10 @@
 4. Open browser to `http://DOCKERHOST:9999`
 
 ```bash
-git clone https://github.com/ludeeus/custom-installer.git
-cd custom-installer/
-sudo docker build --tag=custom-installer .
-sudo docker run -d --name custom-installer -p 9999:9999 -v /path/to/HA/config:/config custom-installer
+git clone https://github.com/ludeeus/custom-component-store.git
+cd custom-component-store./
+sudo docker build --tag=custom-component-store .
+sudo docker run -d --name custom-component-store -p 9999:9999 -v /path/to/HA/config:/config custom-component-store
 ```
 
-![overview](images/overview.png)
+![overview](images/demo.gif)
