@@ -132,7 +132,7 @@ async def component_view(request):
         button3 = ''
 
         if installed:
-            button1 = button.format(target='/component/'+component+'/install',
+            button1 = button.format(target='/component/'+component,
                                     extra='', text='CHECK FOR UPDATE')
 
             button4 = button.format(target='/component/'+component+'/uninstall',
@@ -143,7 +143,7 @@ async def component_view(request):
 
         if has_update:
             update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
-            button1 = button.format(target='/component/'+component+'/install',
+            button1 = button.format(target='/component/'+component+'/update',
                                     extra='', text='UPDATE')
 
             button3 = button.format(target=changelog, extra='target="_blank"',
@@ -155,6 +155,8 @@ async def component_view(request):
         if description is not None and ':' in description:
             description = description.split(':')[-1]
 
+        if installed_version is None:
+            installed_version = ''
 
         content = """
             <div class="row">
@@ -212,16 +214,26 @@ async def json(request):
     return web.json_response(json_data)
 
 
-async def install(request):
+async def install_component(request):
     """Install component"""
     component = request.match_info['component']
+    print("Installing", component)
     custom_components.install(PATH, component, None)
     raise web.HTTPFound('/component/' + component)
 
 
-async def uninstall(request):
-    """Install component"""
+async def update_component(request):
+    """Update component"""
     component = request.match_info['component']
+    print("Updating", component)
+    custom_components.install(PATH, component, None)
+    raise web.HTTPFound('/component/' + component)
+
+
+async def uninstall_component(request):
+    """Uninstall component"""
+    component = request.match_info['component']
+    print("Uninstalling", component)
     comp_data = await data.get_data()
     os.remove(PATH + comp_data[component]['local_location'])
     raise web.HTTPFound('/component/' + component)
@@ -236,7 +248,8 @@ if __name__ == "__main__":
     APP.router.add_route('GET', r'/store', the_store_view)
     APP.router.add_route('GET', r'/json', json)
     APP.router.add_route('GET', r'/component/{component}', component_view)
-    APP.router.add_route('GET', r'/component/{component}/install', install)
-    APP.router.add_route('GET', r'/component/{component}/uninstall', uninstall)
+    APP.router.add_route('GET', r'/component/{component}/install', install_component)
+    APP.router.add_route('GET', r'/component/{component}/update', update_component)
+    APP.router.add_route('GET', r'/component/{component}/uninstall', uninstall_component)
     APP.router.add_route('GET', r'/component/{component}/json', json)
     web.run_app(APP, port=9999)
