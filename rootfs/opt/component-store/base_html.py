@@ -20,6 +20,7 @@ TOP = """
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="/">Installed</a></li>
         <li><a href="/store">"The Store"</a></li>
+        <li><a href="/about">About</a></li>
       </ul>
     </div>
   </nav>
@@ -36,9 +37,6 @@ BASE = """
 
 END = """
 <footer class="page-footer blue-grey darken-1">
-  <div class="container style="padding-bottom: 15px;">
-    <a href="https://www.buymeacoffee.com/ludeeus" target="_blank" style="color: #fff";><i class="fa fa-coffee"></i>&nbsp;Buy me a coffee :D</i></a>
-  </div>
   <div class="container" style="padding-bottom: 15px;">
     <i>This site and the items here is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
   </div>

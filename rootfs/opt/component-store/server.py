@@ -10,9 +10,64 @@ import data
 PATH = '/config'
 
 
+async def about_view(request):
+    """View for about."""
+    print("Serving about")
+
+    content = """
+        <div class="row"><div class="col s12">
+            <div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">About</span>
+                <p>
+                    This tool can help you manage your 'custom_components' for Home Assistant.</b>
+                    This will <b>only</b> manage the '.py' files for you, you still need to manually add/remove entries in 'configuration.yaml'.
+                </p>
+            </div></div>
+
+            <div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">Custom Components</span>
+                <p>
+                    All the components/platforms that you can manage with this needs to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" class="link">customjson</a>, 
+                    by default all components/platforms that folow the standard in the <a href="https://github.com/custom-components" target="_blank" class="link">custom-component org. on GitHub</a> are managable, other components/platforms would need to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" class="link">customjson</a> before they can show up here.
+                </p>
+            </div></div>
+
+            <div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">Notice</span>
+                <p>
+                    This project uses many recources to work:
+                    </br><a href="https://github.com/ludeeus/customjson" target="_blank" class="link">customjson</a>
+                    </br><a href="https://github.com/ludeeus/pyupdate" target="_blank" class="link">pyupdate</a>
+                    </br><a href="https://fontawesome.com/" target="_blank" class="link">Font Awesome</a>
+                    </br><a href="http://fonts.googleapis.com/css?family=Roboto" target="_blank" class="link">fonts.googleapis.com</a>
+                    </br><a href="https://materializecss.com" target="_blank" class="link">materialize</a>
+                    </br><a href="https://aiohttp.readthedocs.io/en/stable/" target="_blank" class="link">aiohttp</a>
+                    </br><a href="https://github.com/hassio-addons" target="_blank" class="link">Community Hass.io Add-ons</a>
+                    </br><a href="https://github.com/just-containers/s6-overlay" target="_blank" class="link">s6-overlay</a>
+                </p>
+            </div></div>
+
+            <div class="card blue-grey darken-1"><div class="card-content white-text">
+                <p>
+                    <b>This is in the footer of every page here, but I think that it belongs here to.</b></br></br></br>
+                    <i>This site and the items here is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
+                </p>
+            </div></div>
+
+            <div class="card blue-grey darken-1"><div class="card-content white-text">
+                <p>
+                    <a href="https://www.buymeacoffee.com/ludeeus" target="_blank"  class="author"><i class="fa fa-coffee"></i>&nbsp;Buy me a coffee :D</i></a>
+                </p>
+            </div></div>
+        </div></div>
+    """
+
+    html = base_html.TOP
+    html += base_html.BASE.format(main=content)
+    html += base_html.END
+    return web.Response(body=html, content_type="text/html", charset="utf-8")
+
+
 async def installed_components_view(request):
-    """Default/Installed view"""
-    print("Serving default/Installed view.")
+    """Default/Installed view."""
+    print("Serving default/Installed view")
     components = await data.get_data()
     installed = []
     content = ''
@@ -68,8 +123,8 @@ async def installed_components_view(request):
 
 
 async def the_store_view(request):
-    """View for 'The Store'"""
-    print("Serving 'The Store'.")
+    """View for 'The Store'."""
+    print("Serving 'The Store'")
     components = await data.get_data()
     content = ''
 
@@ -272,6 +327,7 @@ if __name__ == "__main__":
     APP.router.add_route('GET', r'/', installed_components_view)
     APP.router.add_route('GET', r'/store', the_store_view)
     APP.router.add_route('GET', r'/json', json)
+    APP.router.add_route('GET', r'/about', about_view)
     APP.router.add_route('GET', r'/component/{component}', component_view)
     APP.router.add_route('GET', r'/component/{component}/install', install_component)
     APP.router.add_route('GET', r'/component/{component}/update', update_component)

@@ -51,5 +51,8 @@ STYLE = """
     .author {
         color: #ffab40;
     }
+    .link {
+        color: #ffab40;
+    }
 </style>
 """
