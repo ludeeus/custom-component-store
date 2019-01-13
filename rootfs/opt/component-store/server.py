@@ -63,7 +63,7 @@ async def installed_components_view(request):
     html = base_html.TOP
     html += base_html.BASE.format(main=content)
     html += base_html.END
-    return web.Response(body=html, content_type="text/html")
+    return web.Response(body=html, content_type="text/html", charset="utf-8")
 
 
 
@@ -102,7 +102,7 @@ async def the_store_view(request):
     html = base_html.TOP
     html += base_html.BASE.format(main=content)
     html += base_html.END
-    return web.Response(body=html, content_type="text/html")
+    return web.Response(body=html, content_type="text/html", charset="utf-8")
 
 
 async def component_view(request):
@@ -224,7 +224,7 @@ async def component_view(request):
     html = base_html.TOP
     html += base_html.BASE.format(main=content)
     html += base_html.END
-    return web.Response(body=html, content_type="text/html")
+    return web.Response(body=html, content_type="text/html", charset="utf-8")
 
 
 async def json(request):
