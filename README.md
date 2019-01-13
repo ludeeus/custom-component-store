@@ -14,7 +14,7 @@ docker run -d \
   ludeeus/custom-component-store:latest
 ```
 
-`/path/to/HA/config` **must** be the root of your Home Assistant configuration.
+`/path/to/HA/config` **must** be the root of your Home Assistant configuration, and this **has** to be `rw`.
 
 When the container is running point your browser to `http://DOCKERHOST:1800`
 
