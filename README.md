@@ -5,21 +5,27 @@
 ## Installation
 
 ```bash
-sudo docker run -d --name custom-component-store -p 9999:9999 -v /path/to/HA/config:/config ludeeus/custom-component-store:dev
+docker run -d \
+  --name custom-component-store \
+  -p 1800:1800 \
+  -v /path/to/HA/config:/config \
+  -e USERNAME=YOURUSERNAME \
+  -e PASSWORD=YOURPASSWORD \
+  ludeeus/custom-component-store:latest
 ```
 
-Now Open browser to `http://DOCKERHOST:9999`
+`/path/to/HA/config` **must** be the root of your Home Assistant configuration.
 
-## Upgrade
+When the container is running point your browser to `http://DOCKERHOST:1800`
 
-```bash
-sudo docker rm -f custom-component-store
-sudo docker run -d --name custom-component-store -p 9999:9999 -v /path/to/HA/config:/config ludeeus/custom-component-store:dev
-```
-
-Now Open browser to `http://DOCKERHOST:9999`
+ENV | Type | Description
+-- | -- | --
+USERNAME | String | Username for HTTPBasicAuth
+PASSWORD | String | Password for HTTPBasicAuth
+NO_AUTH | Bool | Disable HTTPBasicAuth, you should **NEVER** use this.
 
 ***
+## Notice
 
 Inspiration on how to make this container comes from https://github.com/hassio-addons
 
