@@ -14,6 +14,8 @@ async def get_data():
     url += '/master/repos.json'
     web_request = requests.get(url).json()
 
+    local_components = {}
+
     if web_request:
         for item in web_request:
             value[item] = web_request[item]
@@ -21,11 +23,15 @@ async def get_data():
             value[item]['installed'] = False
             value[item]['has_update'] = False
 
-    local_components = {}
+    if os.environ.get('EXTRA'):
+        extra_request = requests.get(url).json()
+        for item in extra_request:
+            value[item] = web_request[item]
+            value[item]['local_version'] = None
+            value[item]['installed'] = False
+            value[item]['has_update'] = False
 
-    extra = os.environ.get('EXTRA')
-
-    local_request = custom_components.get_sensor_data(PATH, False, extra)[0]
+    local_request = custom_components.get_sensor_data(PATH, False, None)[0]
 
     for item in local_request:
         if item not in ['domain', 'has_update']:
