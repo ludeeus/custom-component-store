@@ -117,6 +117,7 @@ async def component_view(request):
 
         changelog = components[component]['changelog']
         description = components[component]['description']
+        long_description = components[component].get('long_description')
         has_update = components[component]['has_update']
         image_link = components[component].get('image_link')
         installed = components[component]['installed']
@@ -166,6 +167,11 @@ async def component_view(request):
         else:
             image = ''
 
+        if long_description:
+            more_info = '{}</br>'.format(long_description)
+        else:
+            more_info = ''
+
         content = """
             <div class="row">
             <div class="col s12">
@@ -175,6 +181,7 @@ async def component_view(request):
                     <p>
                     {description}</br>
                     {image}</br>
+                    {more_info}
                     {installed_version}</br>
                     Published version: {published_version}</br>
                     </p>
@@ -189,7 +196,7 @@ async def component_view(request):
             </div>
             </div>
         """.format(update=update, component=component, description=description,
-                   image=image, installed_version=installed_version,
+                   image=image, more_info=more_info, installed_version=installed_version,
                    published_version=published_version, button1=button1,
                    button2=button2, button3=button3, button4=button4)
     else:
