@@ -162,7 +162,7 @@ async def component_view(request):
             installed_version = ''
 
         if image_link:
-            image = '<img src="{}" class="overview">'.format(image_link)
+            image = '</br><img src="{}" class="overview"></br>'.format(image_link)
         else:
             image = ''
 
