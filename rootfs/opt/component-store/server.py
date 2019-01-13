@@ -54,7 +54,7 @@ async def installed_components_view(request):
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">No components installed :(</span></a>
-                  <p>Go to "The store" abowe to get some awesome components.</p>
+                  <p>Go to "The Store" to get some awesome components.</p>
                 </div>
               </div>
             </div>
@@ -124,7 +124,7 @@ async def component_view(request):
         description = components[component]['description']
 
         button1 = button.format(target='/component/'+component+'/install',
-                                extra='', text='INNSTALL')
+                                extra='', text='INSTALL')
 
         button2 = button.format(target=repository, extra='target="_blank"',
                                 text='REPOSITORY')
