@@ -24,7 +24,6 @@ ENV | Type | Description
 -- | -- | --
 USERNAME | String | Username for HTTPBasicAuth
 PASSWORD | String | Password for HTTPBasicAuth
-NO_AUTH | Bool | Disable HTTPBasicAuth, you should **NEVER** set this to `true`.
 
 ## Notice
 
