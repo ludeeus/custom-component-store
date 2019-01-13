@@ -1,5 +1,7 @@
 # custom-component-store
 
+**NOTE!: This is in an "alpha" stage, do NOT try to use this unless you know what you are doing, this should not be used or shared.**
+
 ![overview](https://i.ibb.co/BszqLXr/demo.gif)
 
 ## Installation
