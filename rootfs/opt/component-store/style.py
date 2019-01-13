@@ -48,5 +48,8 @@ STYLE = """
     img.overview {
         max-width: 95%;
     }
+    .author {
+        color: #ffab40;
+    }
 </style>
 """

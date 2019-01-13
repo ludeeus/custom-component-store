@@ -135,8 +135,9 @@ async def component_view(request):
         button3 = ''
 
         if authordata:
-            author = 'Author: <a href="{}">@{}</a></br>'.format(authordata.get('html_url'),
-                                                           authordata.get('login'))
+            author = '</br>Author: <a href="{}" target="_blank" '.format(authordata.get('html_url'))
+            author += 'class="author">@{}</a></br>'.format(authordata.get('login'))
+
         else:
             author = ''
 
