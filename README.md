@@ -7,7 +7,7 @@
 ```bash
 docker run -d \
   --name custom-component-store \
-  -p 1800:1800 \
+  -p 8100:8100 \
   -v /path/to/HA/config:/config \
   -e USERNAME=YOURUSERNAME \
   -e PASSWORD=YOURPASSWORD \
@@ -16,7 +16,7 @@ docker run -d \
 
 `/path/to/HA/config` **must** be the root of your Home Assistant configuration, and this **has** to be `rw`.
 
-When the container is running point your browser to `http://DOCKERHOST:1800`
+When the container is running point your browser to `http://DOCKERHOST:8100`
 
 ENV | Type | Description
 -- | -- | --
