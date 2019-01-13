@@ -24,9 +24,12 @@ USERNAME | String | Username for HTTPBasicAuth
 PASSWORD | String | Password for HTTPBasicAuth
 NO_AUTH | Bool | Disable HTTPBasicAuth, you should **NEVER** set this to `true`.
 
-***
 ## Notice
 
 Inspiration on how to make this container comes from https://github.com/hassio-addons
 
 The Community Hass.io add-ons for Home Assistant was created by [Franck Nijhof @frenck](https://github.com/frenck)
+
+***
+
+This is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.
