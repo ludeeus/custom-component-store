@@ -115,6 +115,7 @@ async def component_view(request):
 
         button = '<a href="{target}" {extra}>{text}</a>'
 
+        authordata = components[component].get('author')
         changelog = components[component]['changelog']
         description = components[component]['description']
         long_description = components[component].get('long_description')
@@ -132,6 +133,12 @@ async def component_view(request):
                                 text='REPOSITORY')
 
         button3 = ''
+
+        if authordata:
+            author = 'Author: <a href="{}">@{}</a></br>'.format(authordata.get('html_url'),
+                                                           authordata.get('login'))
+        else:
+            author = ''
 
         if installed:
             button1 = button.format(target='/component/'+component,
@@ -182,6 +189,7 @@ async def component_view(request):
                     {description}</br>
                     {image}</br>
                     {more_info}
+                    {author}
                     {installed_version}</br>
                     Published version: {published_version}</br>
                     </p>
@@ -197,7 +205,7 @@ async def component_view(request):
             </div>
         """.format(update=update, component=component, description=description,
                    image=image, more_info=more_info, installed_version=installed_version,
-                   published_version=published_version, button1=button1,
+                   author=author, published_version=published_version, button1=button1,
                    button2=button2, button3=button3, button4=button4)
     else:
         content = """
