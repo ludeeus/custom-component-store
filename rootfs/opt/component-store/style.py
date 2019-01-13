@@ -45,5 +45,8 @@ STYLE = """
       font-weight: bolder;
       float: right;
     }
+    img.overview {
+        max-width: 95%;
+    }
 </style>
 """
