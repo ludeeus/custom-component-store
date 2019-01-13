@@ -1,4 +1,5 @@
 """Handle data"""
+import os
 import requests
 from pyupdate.ha_custom import custom_components
 
@@ -21,7 +22,10 @@ async def get_data():
             value[item]['has_update'] = False
 
     local_components = {}
-    local_request = custom_components.get_sensor_data(PATH, False, None)[0]
+
+    extra = os.environ.get('EXTRA')
+
+    local_request = custom_components.get_sensor_data(PATH, False, extra)[0]
 
     for item in local_request:
         if item not in ['domain', 'has_update']:
