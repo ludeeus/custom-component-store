@@ -26,7 +26,7 @@ async def get_data():
     if os.environ.get('EXTRA'):
         extra_request = requests.get(url).json()
         for item in extra_request:
-            value[item] = web_request[item]
+            value[item] = extra_request[item]
             value[item]['local_version'] = None
             value[item]['installed'] = False
             value[item]['has_update'] = False
