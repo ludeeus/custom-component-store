@@ -18,6 +18,7 @@ Now Open browser to `http://DOCKERHOST:9999`
 ```bash
 cd custom-component-store/
 git pull
+sudo docker build --tag=custom-component-store .
 sudo docker rm -f custom-component-store
 sudo docker run -d --name custom-component-store -p 9999:9999 -v /path/to/HA/config:/config custom-component-store
 ```
