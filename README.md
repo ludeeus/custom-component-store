@@ -1,6 +1,6 @@
 # custom-component-store
 
-![overview](images/demo.gif)
+![overview](https://i.ibb.co/BszqLXr/demo.gif)
 
 ## Installation
 
