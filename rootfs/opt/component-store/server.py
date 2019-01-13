@@ -156,11 +156,13 @@ async def component_view(request):
         if description is not None and ':' in description:
             description = description.split(':')[-1]
 
-        if installed_version is None:
+        if installed_version:
+            installed_version = "Installed version: {}".format(installed_version)
+        else:
             installed_version = ''
 
         if image_link:
-            image = '<img src="{image_link}" class="overview">'.format(image_link=image_link)
+            image = '<img src="{}" class="overview">'.format(image_link)
         else:
             image = ''
 
@@ -173,7 +175,7 @@ async def component_view(request):
                     <p>
                     {description}</br>
                     {image}</br>
-                    Installed version: {installed_version}</br>
+                    {installed_version}</br>
                     Published version: {published_version}</br>
                     </p>
                 </div>
