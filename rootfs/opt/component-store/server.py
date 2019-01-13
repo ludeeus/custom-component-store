@@ -166,7 +166,7 @@ async def component_view(request):
             description = description.split(':')[-1]
 
         if installed_version:
-            installed_version = "Installed version: {}".format(installed_version)
+            installed_version = "Installed version: {}</br>".format(installed_version)
         else:
             installed_version = ''
 
@@ -191,7 +191,7 @@ async def component_view(request):
                     {image}</br>
                     {more_info}
                     {author}
-                    {installed_version}</br>
+                    {installed_version}
                     Published version: {published_version}</br>
                     </p>
                 </div>
