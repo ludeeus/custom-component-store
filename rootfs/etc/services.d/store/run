@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+###############################################
+#
+#  Run the custom-component-store
+#
+###############################################
+
+exec python3 -u "/opt/componentstore/server.py"

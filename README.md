@@ -18,3 +18,9 @@ sudo docker run -d --name custom-component-store -p 9999:9999 -v /path/to/HA/con
 ```
 
 Now Open browser to `http://DOCKERHOST:9999`
+
+***
+
+Inspiration on how to make this container comes from https://github.com/hassio-addons
+
+The Community Hass.io add-ons for Home Assistant was created by [Franck Nijhof @frenck](https://github.com/frenck)

@@ -1,21 +1,35 @@
-# Arguments
-ARG VERSION
-ARG BUILD_FROM=python:3.7-slim
+# Base image
+FROM alpine:3.8
 
-FROM ${BUILD_FROM}
+# Copy root filesystem
+COPY rootfs /
 
-# Set working dir
-WORKDIR /app
+# Copy Python requirements file
+COPY requirements.txt /tmp/
 
-# Gather all the files.
-COPY . /app
+# ENV
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 # Build
 RUN \
-  pip install --trusted-host pypi.python.org -r requirements.txt
+  apk add --no-cache \
+    apache2-utils=2.4.35-r0 \
+    apk-tools=2.10.1-r0 \
+    bash=4.4.19-r1 \
+    ca-certificates=20171114-r3 \
+    curl=7.61.1-r1 \
+    nginx=1.14.2-r0 \
+    python3=3.6.6-r0 \
+  \
+  && pip3 install --no-cache-dir -r /tmp/requirements.txt \
+  \
+  && rm -f -r /tmp/* \
+  \
+  && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz \
+      | tar xvzf - -C / 
 
 # Entrypoint
-CMD ["python", "-u", "server.py"]
+ENTRYPOINT [ "/init" ]
 
 # Arguments
 ARG BUILD_DATE
