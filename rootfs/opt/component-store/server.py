@@ -60,7 +60,6 @@ async def about_view(request):
                     </br><a href="http://fonts.googleapis.com/css?family=Roboto" target="_blank" class="link">fonts.googleapis.com</a>
                     </br><a href="https://materializecss.com" target="_blank" class="link">materialize</a>
                     </br><a href="https://aiohttp.readthedocs.io/en/stable/" target="_blank" class="link">aiohttp</a>
-                    </br><a href="https://github.com/hassio-addons" target="_blank" class="link">Community Hass.io Add-ons</a>
                     </br><a href="https://github.com/just-containers/s6-overlay" target="_blank" class="link">s6-overlay</a>
                 </p>
             </div></div>
