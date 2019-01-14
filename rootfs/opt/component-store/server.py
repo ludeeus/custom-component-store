@@ -201,8 +201,10 @@ async def component_view(request):
         published_version = components[component]['version']
         repository = components[component]['visit_repo']
 
+        toast = """ onclick=\"M.toast({html: 'Installing', displayLength: 10000})\""""
+
         button1 = button.format(target='/component/'+component+'/install',
-                                extra='', text='INSTALL')
+                                extra=toast, text='INSTALL')
 
         button2 = button.format(target=repository, extra='target="_blank"',
                                 text='REPOSITORY')
@@ -220,16 +222,18 @@ async def component_view(request):
             button1 = button.format(target='/component/'+component,
                                     extra='', text='CHECK FOR UPDATE')
 
+            toast = """ onclick=\"M.toast({html: 'Uninstalling', displayLength: 10000})\""""
             button4 = button.format(target='/component/'+component+'/uninstall',
-                                    extra='class="uninstall"',
+                                    extra='class="uninstall"'+toast,
                                     text='UNINSTALL')
         else:
             button4 = ''
 
         if has_update:
             update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
+            toast = " onclick='M.toast({html: 'Updating', displayLength: 10000)'"
             button1 = button.format(target='/component/'+component+'/update',
-                                    extra='', text='UPDATE')
+                                    extra=toast, text='UPDATE')
 
             button3 = button.format(target=changelog, extra='target="_blank"',
                                     text='RELEASE NOTES')
