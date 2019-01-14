@@ -273,12 +273,10 @@ async def component_view(request):
                 <p>Option 1: Change the location of the platform</br>
                 from: 'custom_components/{domain}/{platform}.py'</br>
                 to: 'custom_components/{platform}/{domain}.py'</br></br></p>
-
-                <p>Option 2: Delete the file and reinstall with this site.</p>
                 """.format(domain=component.split('.')[0], platform=component.split('.')[1])
 
-            if embedded and embedded_path:
-                attention += """
+            if embedded:
+                attention += """<p>Option 2: Delete the file and reinstall with this site.</p>
                     <p></br></br>Option 3: Click the "MIGRATE" button.</p>
                     """
                 button2 = button.format(target=component+'/migrate', extra='',
