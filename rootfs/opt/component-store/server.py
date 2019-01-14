@@ -7,7 +7,7 @@ import base_html
 import data
 import requests
 
-PATH = '/config'
+PATH = data.PATH
 
 
 async def about_view(request):

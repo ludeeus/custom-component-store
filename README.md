@@ -10,7 +10,7 @@ you still need to manually add/remove entries in `configuration.yaml`.
 
 **Home Assistant version 0.86 or newer is required to use this.**
 
-## Installation
+## Installation on Docker
 
 ```bash
 docker run -d \
@@ -31,12 +31,26 @@ ENV | Type | Description
 USERNAME | String | Username for HTTPBasicAuth
 PASSWORD | String | Password for HTTPBasicAuth
 
-## Notice
-
-Inspiration on how to make this container comes from https://github.com/hassio-addons
-
-The Community Hass.io add-ons for Home Assistant was created by [Franck Nijhof @frenck](https://github.com/frenck)
-
 ***
+
+You get still use this if you are not running Home Assistant in docker, but that is the easies way to get started.
+
+### Hassio
+
+If you use the generic hassio installer, use the instructions for docker.
+
+If you use HassOS use the [Community SSH add-on](https://github.com/hassio-addons/addon-ssh) to run these.
+
+### Other
+
+**NB!: This method will not have authentication!**
+
+**Python version 3.5.3+ is required.**
+
+1. Download this repo from github.
+1. Change `PATH = '/config'` in `rootfs/opt/component-store/data.py` to match where your HA config is.
+1. Run the webserver `python3 rootfs/opt/component-store/data.py`, the user you run this as needs to be able to write to the config dir.
+
+## Notice
 
 This is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.
