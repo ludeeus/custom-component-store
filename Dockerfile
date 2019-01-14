@@ -11,7 +11,12 @@ COPY requirements.txt /tmp/
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 # Set version
-RUN if [ "${SOURCE_BRANCH}" = "master" ] || [ -z "${SOURCE_BRANCH}" ] ; then VERSION="dev"; else VERSION="${SOURCE_BRANCH}"; fi
+RUN if [ "${SOURCE_BRANCH}" = "master" ] || [ -z "${SOURCE_BRANCH}" ]; then\
+      VERSION="dev"; \
+    else \
+      VERSION="${SOURCE_BRANCH}"; \
+    fi \
+  && echo "${VERSION}"
 ENV VERSION="${VERSION}"
 
 # Build
