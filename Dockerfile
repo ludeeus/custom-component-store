@@ -21,23 +21,13 @@ RUN \
     curl=7.61.1-r1 \
     nginx=1.14.2-r0 \
     python3=3.6.6-r0 \
-    wget=1.20.1-r0 \
     \
     && pip3 install --no-cache-dir -r /tmp/requirements.txt \
     \
     && rm -f -r /tmp/* \
     \
     && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz \
-        | tar xvzf - -C / \
-    \
-    && wget -o /opt/component-store/resources/font-awesome.css \
-        https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css \
-    && wget -o /opt/component-store/resources/roboto.css \
-        http://fonts.googleapis.com/css?family=Roboto \
-    && wget -o /opt/component-store/resources/materialize.css \
-        https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css \
-    && wget -o /opt/component-store/resources/materialize.js \
-        https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js
+        | tar xvzf - -C / 
 
 # Entrypoint
 ENTRYPOINT [ "/init" ]
