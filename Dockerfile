@@ -9,16 +9,7 @@ COPY requirements.txt /tmp/
 
 # ENV
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
-
-# Set version
-RUN if [ "${SOURCE_BRANCH}" = "master" ] || [ -z "${SOURCE_BRANCH}" ]; then\
-      VERSION="dev"; \
-    else \
-      VERSION="${SOURCE_BRANCH}"; \
-    fi \
-  && echo "${VERSION}" \
-  && echo "${SOURCE_BRANCH}"
-ENV VERSION="${VERSION}"
+ENV VERSION="0.1.0"
 
 # Build
 RUN \
