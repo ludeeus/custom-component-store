@@ -2,60 +2,64 @@
 import os
 import re
 import requests
-from pyupdate.ha_custom import custom_components
 
-
+CACHE = {}
 PATH = '/config'
 
 
 async def get_data():
     """Get version data."""
-    value = {}
-    url = 'https://raw.githubusercontent.com/custom-components/information'
-    url += '/master/repos.json'
-    web_request = requests.get(url).json()
+    global CACHE
+    try:
+        value = {}
+        url = 'https://raw.githubusercontent.com/custom-components/information'
+        url += '/master/repos.json'
+        web_request = requests.get(url).json()
 
-    local_components = get_local_components()
+        local_components = get_local_components()
 
-    if web_request:
-        for item in web_request:
-            value[item] = web_request[item]
+        if web_request:
+            for item in web_request:
+                value[item] = web_request[item]
 
-    extra = os.environ.get('EXTRA')
-    if extra:
-        extra_request = requests.get(extra).json()
-        for item in extra_request:
-            value[item] = extra_request[item]
+        extra = os.environ.get('EXTRA')
+        if extra:
+            extra_request = requests.get(extra).json()
+            for item in extra_request:
+                value[item] = extra_request[item]
 
 
-    for item in value:
-        local_locations = []
-        local_path = None
-        installed = False
-        has_update = False
-        version = None
+        for item in value:
+            local_locations = []
+            local_path = None
+            installed = False
+            has_update = False
+            version = None
 
-        embedded = value[item].get('embedded')
-        if embedded:
-            local_locations.append(value[item].get('embedded_path'))
-        if not local_locations:
-            local_locations.append(value[item].get('local_location'))
+            embedded = value[item].get('embedded')
+            if embedded:
+                local_locations.append(value[item].get('embedded_path'))
+            if not local_locations:
+                local_locations.append(value[item].get('local_location'))
 
-        for path in local_locations:
-            if path in local_components:
-                local_path = path
-                installed = True
+            for path in local_locations:
+                if path in local_components:
+                    local_path = path
+                    installed = True
 
-        if installed:
-            version = get_local_version(local_path)
-        if version is not None:
-            has_update = version != value[item]['version']
+            if installed:
+                version = get_local_version(local_path)
+            if version is not None:
+                has_update = version != value[item]['version']
 
-        value[item]['local_version'] = version
-        value[item]['has_update'] = has_update
-        value[item]['has_update'] = has_update
-        value[item]['installed'] = installed
-    return value
+            value[item]['local_version'] = version
+            value[item]['has_update'] = has_update
+            value[item]['has_update'] = has_update
+            value[item]['installed'] = installed
+            CACHE = value
+    except Exception:
+        print("There was an issue getting new data!")
+    return CACHE
 
 
 def get_docker_version():

@@ -43,3 +43,10 @@ END = """
 </footer>
 </body>
 """
+
+TOOLTIP = """
+  <div class="tooltip" style="{style}">
+      {message}
+      <span class="tooltiptext">{tooltip}</span>
+  </div>
+"""

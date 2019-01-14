@@ -58,5 +58,25 @@ STYLE = """
     a {
         color: #ffab40;
     }
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 250px;
+        background-color: #546e7aa1;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        font-size: small;
+    }
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
 </style>
 """

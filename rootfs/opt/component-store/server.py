@@ -1,11 +1,11 @@
 """Custom Components store."""
 import os
 
-from aiohttp import web
-from pyupdate.ha_custom import custom_components
+import requests
+
 import base_html
 import data
-import requests
+from aiohttp import web
 
 PATH = data.PATH
 
@@ -56,7 +56,6 @@ async def about_view(request):
                 <p>
                     This project uses many recources to work:
                     </br><a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a>
-                    </br><a href="https://github.com/ludeeus/pyupdate" target="_blank" >pyupdate</a>
                     </br><a href="https://fontawesome.com/" target="_blank" >Font Awesome</a>
                     </br><a href="http://fonts.googleapis.com/css?family=Roboto" target="_blank" >fonts.googleapis.com</a>
                     </br><a href="https://materializecss.com" target="_blank" >materialize</a>
@@ -158,12 +157,21 @@ async def the_store_view(request):
         if description is not None and ':' in description:
             description = description.split(':')[-1]
 
+        if not components[component]['embedded']:
+            style = 'float: right;'
+            message = '<i class="fa fa-info" style="color: darkred;"></i>'
+            tooltip = 'Not managable'
+            warning = base_html.TOOLTIP.format(style=style, message=message,
+                                               tooltip=tooltip)
+        else:
+            warning = ''
+
         content += """
             <div class="row">
             <div class="col s12">
                 <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                    <span class="card-title">{update}{component}</span>
+                    <span class="card-title">{update}{component}{warning}</span>
                     <p>{description}</p>
                 </div>
                 <div class="card-action">
@@ -173,7 +181,7 @@ async def the_store_view(request):
             </div>
             </div>
         """.format(update=update, component=component,
-                   description=description)
+                   description=description, warning=warning)
 
     html = base_html.TOP
     html += base_html.BASE.format(main=content)
@@ -194,7 +202,6 @@ async def component_view(request):
         authordata = components[component].get('author')
         attention = components[component].get('attention')
         embedded = components[component].get('embedded')
-        embedded_path = components[component].get('embedded')
         changelog = components[component]['changelog']
         description = components[component]['description']
         long_description = components[component].get('long_description')

@@ -1,2 +1,1 @@
-pyupdate==0.2.16
 aiohttp==3.5.4
