@@ -9,11 +9,14 @@ COPY requirements.txt /tmp/
 
 # ENV
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
-ENV VERSION='0.1.0'
+
+# Set version
+RUN if [ "${SOURCE_BRANCH}" = "master" ] || [ -z "${SOURCE_BRANCH}" ] ; then VERSION="dev"; else VERSION="${SOURCE_BRANCH}"; fi
+ENV VERSION="${VERSION}"
 
 # Build
-RUN \ printenv \
-  && apk add --no-cache \
+RUN \
+    apk add --no-cache \
     apache2-utils=2.4.35-r0 \
     apk-tools=2.10.1-r0 \
     bash=4.4.19-r1 \
