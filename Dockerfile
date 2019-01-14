@@ -42,4 +42,4 @@ LABEL \
     org.label-schema.name="custom-component-store" \
     org.label-schema.schema-version="1.0" \
     org.label-schema.url="https://github.com/ludeeus/custom-component-store" \
-    org.label-schema.usage="https://github.com/ludeeus/custom-component-store/blob/master/README.md" \
+    org.label-schema.usage="https://github.com/ludeeus/custom-component-store/blob/master/README.md"

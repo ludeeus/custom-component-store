@@ -45,13 +45,17 @@ STYLE = """
       font-weight: bolder;
       float: right;
     }
+    .attention {
+      color: darkred !important;
+      font-weight: bolder;
+    }
     img.overview {
         max-width: 95%;
     }
     .author {
         color: #ffab40;
     }
-    .link {
+    a {
         color: #ffab40;
     }
 </style>

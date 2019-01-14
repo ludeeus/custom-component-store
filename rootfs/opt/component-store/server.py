@@ -36,31 +36,32 @@ async def about_view(request):
                         <div class="col s7">{newest_version}</div>
                     </div>
                     <div class="row" style="margin-bottom: 2px;">
-                        <div class="col s12"><a href="https://github.com/ludeeus/custom-component-store" target="_blank" class="link">Project @ GitHub</a></div>
+                        <div class="col s12"><a href="https://github.com/ludeeus/custom-component-store" target="_blank" >Project @ GitHub</a></div>
                     </div>
                     <div class="row" style="margin-bottom: 2px;">
-                        <div class="col s12"><a href="https://hub.docker.com/r/ludeeus/custom-component-store" target="_blank" class="link">Project @ Docker hub</a></div>
+                        <div class="col s12"><a href="https://hub.docker.com/r/ludeeus/custom-component-store" target="_blank" >Project @ Docker hub</a></div>
                     </div>
                 </p>
             </div></div>
 
             <div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">Custom Components</span>
                 <p>
-                    All the components/platforms that you can manage with this needs to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" class="link">customjson</a>, 
-                    by default all components/platforms that folow the standard in the <a href="https://github.com/custom-components" target="_blank" class="link">custom-component org. on GitHub</a> are managable, other components/platforms would need to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" class="link">customjson</a> before they can show up here.
+                    All the components/platforms that you can manage with this needs to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a>, 
+                    by default all components/platforms that folow the standard in the <a href="https://github.com/custom-components" target="_blank" >custom-component org. on GitHub</a> are managable, other components/platforms would need to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a> before they can show up here.</br>
+                    The platform structure needs to be as embeded platforms to be shown here.
                 </p>
             </div></div>
 
             <div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">Notice</span>
                 <p>
                     This project uses many recources to work:
-                    </br><a href="https://github.com/ludeeus/customjson" target="_blank" class="link">customjson</a>
-                    </br><a href="https://github.com/ludeeus/pyupdate" target="_blank" class="link">pyupdate</a>
-                    </br><a href="https://fontawesome.com/" target="_blank" class="link">Font Awesome</a>
-                    </br><a href="http://fonts.googleapis.com/css?family=Roboto" target="_blank" class="link">fonts.googleapis.com</a>
-                    </br><a href="https://materializecss.com" target="_blank" class="link">materialize</a>
-                    </br><a href="https://aiohttp.readthedocs.io/en/stable/" target="_blank" class="link">aiohttp</a>
-                    </br><a href="https://github.com/just-containers/s6-overlay" target="_blank" class="link">s6-overlay</a>
+                    </br><a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a>
+                    </br><a href="https://github.com/ludeeus/pyupdate" target="_blank" >pyupdate</a>
+                    </br><a href="https://fontawesome.com/" target="_blank" >Font Awesome</a>
+                    </br><a href="http://fonts.googleapis.com/css?family=Roboto" target="_blank" >fonts.googleapis.com</a>
+                    </br><a href="https://materializecss.com" target="_blank" >materialize</a>
+                    </br><a href="https://aiohttp.readthedocs.io/en/stable/" target="_blank" >aiohttp</a>
+                    </br><a href="https://github.com/just-containers/s6-overlay" target="_blank" >s6-overlay</a>
                 </p>
             </div></div>
 
@@ -191,6 +192,7 @@ async def component_view(request):
         button = '<a href="{target}" {extra}>{text}</a>'
 
         authordata = components[component].get('author')
+        attention = components[component].get('attention')
         changelog = components[component]['changelog']
         description = components[component]['description']
         long_description = components[component].get('long_description')
@@ -210,6 +212,8 @@ async def component_view(request):
                                 text='REPOSITORY')
 
         button3 = ''
+
+        published_version = "Published version: {}".format(published_version)
 
         if authordata:
             author = 'Author: <a href="{}" target="_blank" '.format(authordata.get('html_url'))
@@ -259,19 +263,33 @@ async def component_view(request):
         else:
             more_info = ''
 
+        if attention:
+            author = ''
+            button1 = ''
+            button3 = ''
+            description = ''
+            installed_version = ''
+            published_version = ''
+            update = ''
+            attention = """<p class="attention">{}</p></br>""".format(attention)
+        else:
+            attention = ''
+
         content = """
             <div class="row">
             <div class="col s12">
                 <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                     <span class="card-title">{update}{component}</span>
+                    {attention}
                     <p>
                     {description}</br>
                     {image}</br>
                     {more_info}
                     {author}
                     {installed_version}
-                    Published version: {published_version}</br>
+                    {published_version}
+                    </br>
                     </p>
                 </div>
                 <div class="card-action">
@@ -286,7 +304,7 @@ async def component_view(request):
         """.format(update=update, component=component, description=description,
                    image=image, more_info=more_info, installed_version=installed_version,
                    author=author, published_version=published_version, button1=button1,
-                   button2=button2, button3=button3, button4=button4)
+                   button2=button2, button3=button3, button4=button4, attention=attention)
     else:
         content = """
           <div class="row">
@@ -345,16 +363,35 @@ async def uninstall_component(request):
 
 if __name__ == "__main__":
     DIRECTORY = PATH + '/custom_components'
-    if not os.path.exists(DIRECTORY):
-        os.makedirs(DIRECTORY)
-    APP = web.Application()
-    APP.router.add_route('GET', r'/', installed_components_view)
-    APP.router.add_route('GET', r'/store', the_store_view)
-    APP.router.add_route('GET', r'/json', json)
-    APP.router.add_route('GET', r'/about', about_view)
-    APP.router.add_route('GET', r'/component/{component}', component_view)
-    APP.router.add_route('GET', r'/component/{component}/install', install_component)
-    APP.router.add_route('GET', r'/component/{component}/update', update_component)
-    APP.router.add_route('GET', r'/component/{component}/uninstall', uninstall_component)
-    APP.router.add_route('GET', r'/component/{component}/json', json)
-    web.run_app(APP, port=9999)
+    VERSION_PATH = PATH + '/.HA_VERSION'
+    VERSION = 0
+    TARGET = 86
+
+    if not os.path.exists(VERSION_PATH):
+        print("Could not find Home Assistant configuration")
+
+    elif not os.path.exists(PATH):
+        print(PATH, "does not exist...")
+
+    else:
+        with open(VERSION_PATH) as version_file:
+            VERSION = version_file.readlines()
+            VERSION = int(VERSION[0].split('.')[1])
+
+        if not os.path.exists(DIRECTORY):
+            os.makedirs(DIRECTORY)
+
+    if VERSION >= TARGET:
+        APP = web.Application()
+        APP.router.add_route('GET', r'/', installed_components_view)
+        APP.router.add_route('GET', r'/store', the_store_view)
+        APP.router.add_route('GET', r'/json', json)
+        APP.router.add_route('GET', r'/about', about_view)
+        APP.router.add_route('GET', r'/component/{component}', component_view)
+        APP.router.add_route('GET', r'/component/{component}/install', install_component)
+        APP.router.add_route('GET', r'/component/{component}/update', update_component)
+        APP.router.add_route('GET', r'/component/{component}/uninstall', uninstall_component)
+        APP.router.add_route('GET', r'/component/{component}/json', json)
+        web.run_app(APP, port=9999)
+    else:
+        print("You need Home Assistant version 0.86 or newer to use this.")
