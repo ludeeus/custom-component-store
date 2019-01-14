@@ -8,19 +8,19 @@
 if [ -z "${NO_AUTH}" ] || [ "${NO_AUTH}" == false ]; then
 
   if [ -z "${USERNAME}" ]; then
-    echo "Missing username in env CC_USER."
+    echo "Missing username in env USER."
     exit 1
   fi
 
   if [ -z "${PASSWORD}" ]; then
-    echo "Missing password in env CC_PASSWORD."
+    echo "Missing password in env PASSWORD."
     exit 1
   fi
 
   htpasswd -bc /etc/nginx/.htpasswd "${USERNAME}" "${PASSWORD}"
 
 elif [ "${NO_AUTH}" == true ]; then
-  echo "CC_NO_AUTH set to true, skipping authentication."
+  echo "NO_AUTH set to true, skipping authentication."
 
 else
   echo "Something went wrong."
