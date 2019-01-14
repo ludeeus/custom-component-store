@@ -14,12 +14,33 @@ async def about_view(request):
     """View for about."""
     print("Serving about")
 
+    installed_version = os.environ.get('VERSION')
+    if not installed_version:
+        installed_version = 'dev'
+
+    newest_version = data.get_docker_version()
+
     content = """
         <div class="row"><div class="col s12">
             <div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">About</span>
                 <p>
-                    This tool can help you manage your 'custom_components' for Home Assistant.</b>
-                    This will <b>only</b> manage the '.py' files for you, you still need to manually add/remove entries in 'configuration.yaml'.
+                    This tool can help you manage your 'custom_components' for Home Assistant.</br>
+                    This will <b>only</b> manage the '.py' files for you under 'custom_components/', </br>you still need to manually add/remove entries in 'configuration.yaml'.</br></br>
+                    <hr>
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col s5">Installed version:</div>
+                        <div class="col s7">{installed_version}</div>
+                    </div>
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col s5">Newest version:</div>
+                        <div class="col s7">{newest_version}</div>
+                    </div>
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col s12"><a href="https://github.com/ludeeus/custom-component-store" target="_blank" class="link">Project @ GitHub</a></div>
+                    </div>
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col s12"><a href="https://hub.docker.com/r/ludeeus/custom-component-store" target="_blank" class="link">Project @ Docker hub</a></div>
+                    </div>
                 </p>
             </div></div>
 
@@ -57,7 +78,7 @@ async def about_view(request):
                 </p>
             </div></div>
         </div></div>
-    """
+    """.format(installed_version=installed_version, newest_version=newest_version)
 
     html = base_html.TOP
     html += base_html.BASE.format(main=content)

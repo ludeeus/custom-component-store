@@ -47,3 +47,15 @@ async def get_data():
             value[item]['has_update'] = has_update
 
     return value
+
+def get_docker_version():
+    """Get version published for docker."""
+    version = None
+    url = 'https://registry.hub.docker.com/v2/repositories/'
+    url += 'ludeeus/custom-component-store/tags/'
+    tags = requests.get(url).json()['results']
+    for tag in tags:
+        if tag['name'] not in ['latest', 'dev']:
+            version = tag['name']
+            break
+    return version
