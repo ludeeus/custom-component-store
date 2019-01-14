@@ -18,7 +18,7 @@ async def about_view(request):
     if not installed_version:
         installed_version = 'dev'
 
-    newest_version = data.get_docker_version()
+    newest_version = '<a href="https://github.com/ludeeus/custom-component-store/releases/tag/{version}">{version}</a>'.format(version=data.get_docker_version())
 
     content = """
         <div class="row"><div class="col s12">
