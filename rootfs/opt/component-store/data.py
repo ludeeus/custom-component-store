@@ -28,33 +28,33 @@ async def get_data():
             value[item] = extra_request[item]
 
 
-        for item in value:
-            local_locations = []
-            local_path = None
-            installed = False
-            has_update = False
-            version = None
+    for item in value:
+        local_locations = []
+        local_path = None
+        installed = False
+        has_update = False
+        version = None
 
-            embedded = value[item].get('embedded')
-            if embedded:
-                local_locations.append(value[item].get('embedded_path'))
-            if not local_locations:
-                local_locations.append(value[item].get('local_location'))
+        embedded = value[item].get('embedded')
+        if embedded:
+            local_locations.append(value[item].get('embedded_path'))
+        if not local_locations:
+            local_locations.append(value[item].get('local_location'))
 
-            for path in local_locations:
-                if path in local_components:
-                    local_path = path
-                    installed = True
+        for path in local_locations:
+            if path in local_components:
+                local_path = path
+                installed = True
 
-            if installed:
-                version = get_local_version(local_path)
-            if version is not None:
-                has_update = version != value[item]['version']
+        if installed:
+            version = get_local_version(local_path)
+        if version is not None:
+            has_update = version != value[item]['version']
 
-            value[item]['local_version'] = version
-            value[item]['has_update'] = has_update
-            value[item]['has_update'] = has_update
-            value[item]['installed'] = installed
+        value[item]['local_version'] = version
+        value[item]['has_update'] = has_update
+        value[item]['has_update'] = has_update
+        value[item]['installed'] = installed
     return value
 
 
