@@ -5,7 +5,7 @@ from aiohttp import web
 from pyupdate.ha_custom import custom_components
 import base_html
 import data
-
+import requests
 
 PATH = '/config'
 
@@ -48,7 +48,7 @@ async def about_view(request):
                 <p>
                     All the components/platforms that you can manage with this needs to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a>, 
                     by default all components/platforms that folow the standard in the <a href="https://github.com/custom-components" target="_blank" >custom-component org. on GitHub</a> are managable, other components/platforms would need to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a> before they can show up here.</br>
-                    The platform structure needs to be as embeded platforms to be shown here.
+                    The platform structure needs to be as embedded platforms to be shown here.
                 </p>
             </div></div>
 
@@ -193,6 +193,8 @@ async def component_view(request):
 
         authordata = components[component].get('author')
         attention = components[component].get('attention')
+        embedded = components[component].get('embedded')
+        embedded_path = components[component].get('embedded')
         changelog = components[component]['changelog']
         description = components[component]['description']
         long_description = components[component].get('long_description')
@@ -262,6 +264,33 @@ async def component_view(request):
             more_info = '{}</br>'.format(long_description)
         else:
             more_info = ''
+
+        if data.migration_needed(component) and attention is None:
+            attention = """
+                You have this installed with the old format.</br>
+                You need to move (migrate) it to an embedded platform.
+                </br></br>
+                <p>Option 1: Change the location of the platform</br>
+                from: 'custom_components/{domain}/{platform}.py'</br>
+                to: 'custom_components/{platform}/{domain}.py'</br></br></p>
+
+                <p>Option 2: Delete the file and reinstall with this site.</p>
+                """.format(domain=component.split('.')[0], platform=component.split('.')[1])
+
+            if embedded and embedded_path:
+                attention += """
+                    <p></br></br>Option 3: Click the "MIGRATE" button.</p>
+                    """
+                button2 = button.format(target=component+'/migrate', extra='',
+                                        text='MIGRATE')
+            button4 = ''
+
+        if not embedded and attention is None:
+            attention = """
+                This can not be installed/used with this site yet.</br>
+                The developer of this must first migrate it to an embedded platform.
+                </br></br></br><p>{}</br></br>{}{}
+                """.format(description, author, published_version)
 
         if attention:
             author = ''
@@ -339,16 +368,20 @@ async def json(request):
 async def install_component(request):
     """Install component"""
     component = request.match_info['component']
-    print("Installing", component)
-    custom_components.install(PATH, component, None)
-    raise web.HTTPFound('/component/' + component)
+    print("Installing/updating", component)
+    comp_data = await data.get_data()
+    embedded = comp_data[component].get('embedded')
+    if embedded:
+        path = PATH + comp_data[component]['embedded_path']
+    else:
+        path = PATH + comp_data[component]['local_location']
 
+    if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
+        os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
 
-async def update_component(request):
-    """Update component"""
-    component = request.match_info['component']
-    print("Updating", component)
-    custom_components.install(PATH, component, None)
+    with open(path, 'wb') as file:
+        file.write(requests.get(comp_data[component]['remote_location']).content)
+    file.close()
     raise web.HTTPFound('/component/' + component)
 
 
@@ -357,7 +390,25 @@ async def uninstall_component(request):
     component = request.match_info['component']
     print("Uninstalling", component)
     comp_data = await data.get_data()
-    os.remove(PATH + comp_data[component]['local_location'])
+    if comp_data[component].get('embedded_path') is not None:
+        path = PATH + comp_data[component]['embedded_path']
+    else:
+        path = PATH + comp_data[component]['local_location']
+    os.remove(path)
+    raise web.HTTPFound('/component/' + component)
+
+
+async def migrate_component(request):
+    """Migrate component"""
+    component = request.match_info['component']
+    print("Migrating", component)
+    comp_data = await data.get_data()
+    old_path = PATH + comp_data[component]['local_location']
+    new_path = PATH + comp_data[component]['embedded_path']
+    print('From', old_path, 'to', new_path)
+    if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
+        os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
+    os.rename(old_path, new_path)
     raise web.HTTPFound('/component/' + component)
 
 
@@ -389,8 +440,9 @@ if __name__ == "__main__":
         APP.router.add_route('GET', r'/about', about_view)
         APP.router.add_route('GET', r'/component/{component}', component_view)
         APP.router.add_route('GET', r'/component/{component}/install', install_component)
-        APP.router.add_route('GET', r'/component/{component}/update', update_component)
+        APP.router.add_route('GET', r'/component/{component}/update', install_component)
         APP.router.add_route('GET', r'/component/{component}/uninstall', uninstall_component)
+        APP.router.add_route('GET', r'/component/{component}/migrate', migrate_component)
         APP.router.add_route('GET', r'/component/{component}/json', json)
         web.run_app(APP, port=9999)
     else:
