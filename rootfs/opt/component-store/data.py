@@ -35,18 +35,16 @@ async def get_data():
             has_update = False
             version = None
 
-            if value[item].get('embedded_path') is not None:
+            embedded = value[item].get('embedded')
+            if embedded:
                 local_locations.append(value[item].get('embedded_path'))
             if not local_locations:
                 local_locations.append(value[item].get('local_location'))
 
             for path in local_locations:
-                print(path)
                 if path in local_components:
                     local_path = path
                     installed = True
-                    break
-                print(path, installed)
 
             if installed:
                 version = get_local_version(local_path)

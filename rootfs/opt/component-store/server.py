@@ -372,16 +372,15 @@ async def install_component(request):
     comp_data = await data.get_data()
     embedded = comp_data[component].get('embedded')
     if embedded:
-        path = PATH + comp_data[component]['embedded_path']
-    else:
-        path = PATH + comp_data[component]['local_location']
+        localpath = PATH + comp_data[component]['embedded_path']
+        remotepath = comp_data[component]['embedded_path_remote']
 
-    if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
-        os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
+        if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
+            os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
 
-    with open(path, 'wb') as file:
-        file.write(requests.get(comp_data[component]['remote_location']).content)
-    file.close()
+        with open(localpath, 'wb') as file:
+            file.write(requests.get(remotepath).content)
+        file.close()
     raise web.HTTPFound('/component/' + component)
 
 
@@ -390,7 +389,8 @@ async def uninstall_component(request):
     component = request.match_info['component']
     print("Uninstalling", component)
     comp_data = await data.get_data()
-    if comp_data[component].get('embedded_path') is not None:
+    embedded = comp_data[component].get('embedded')
+    if embedded:
         path = PATH + comp_data[component]['embedded_path']
     else:
         path = PATH + comp_data[component]['local_location']
