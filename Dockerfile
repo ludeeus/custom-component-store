@@ -16,7 +16,8 @@ RUN if [ "${SOURCE_BRANCH}" = "master" ] || [ -z "${SOURCE_BRANCH}" ]; then\
     else \
       VERSION="${SOURCE_BRANCH}"; \
     fi \
-  && echo "${VERSION}"
+  && echo "${VERSION}" \
+  && echo "${SOURCE_BRANCH}"
 ENV VERSION="${VERSION}"
 
 # Build
