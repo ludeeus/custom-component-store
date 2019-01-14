@@ -8,6 +8,8 @@ This tool can help you manage your `custom_components` for Home Assistant.
 This will only manage the `.py` files for you under `custom_components/`, 
 you still need to manually add/remove entries in `configuration.yaml`.
 
+**Home Assistant version 0.86 or newer is required to use this.**
+
 ## Installation
 
 ```bash
