@@ -12,7 +12,7 @@ PATH = data.PATH
 
 async def about_view(request):
     """View for about."""
-    print("Serving about")
+    print("Serving about to ", request.headers.get('X-FORWARDED-FOR', None))
 
     installed_version = os.environ.get('VERSION')
     if not installed_version:
@@ -83,7 +83,7 @@ async def about_view(request):
 
 async def installed_components_view(request):
     """Default/Installed view."""
-    print("Serving default/Installed view")
+    print("Serving default/Installed view to ", request.headers.get('X-FORWARDED-FOR', None))
     components = await data.get_data()
     installed = {}
     not_trackable = {}
@@ -179,7 +179,7 @@ async def installed_components_view(request):
 
 async def the_store_view(request):
     """View for 'The Store'."""
-    print("Serving 'The Store'")
+    print("Serving 'The Store' to ", request.headers.get('X-FORWARDED-FOR', None))
     components = await data.get_data()
     content = ''
 
@@ -229,7 +229,7 @@ async def the_store_view(request):
 async def component_view(request):
     """View for single component."""
     component = request.match_info['component']
-    print("Serving view for", component)
+    print("Serving view for", component, "to", request.headers.get('X-FORWARDED-FOR', None))
     if component == 'sensor.example':
         components = data.EXAMPLE
     else:
@@ -444,7 +444,7 @@ async def json(request):
 async def install_component(request):
     """Install component"""
     component = request.match_info['component']
-    print("Installing/updating", component)
+    print("Installing/updating", component, "triggered by", request.headers.get('X-FORWARDED-FOR', None))
     comp_data = await data.get_data()
     embedded = comp_data[component].get('embedded')
     if embedded:
@@ -468,7 +468,7 @@ async def install_component(request):
 async def uninstall_component(request):
     """Uninstall component"""
     component = request.match_info['component']
-    print("Uninstalling", component)
+    print("Uninstalling", component, "triggered by", request.headers.get('X-FORWARDED-FOR', None))
     comp_data = await data.get_data()
     embedded = comp_data[component].get('embedded')
     if embedded:
@@ -482,7 +482,7 @@ async def uninstall_component(request):
 async def migrate_component(request):
     """Migrate component"""
     component = request.match_info['component']
-    print("Migrating", component)
+    print("Migrating", component, "triggered by", request.headers.get('X-FORWARDED-FOR', None))
     comp_data = await data.get_data()
     old_path = PATH + comp_data[component]['local_location']
     new_path = PATH + comp_data[component]['embedded_path']
