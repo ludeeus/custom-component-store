@@ -27,7 +27,6 @@ TOP = """
 </header>
 """.format(style=STYLE)
 
-
 BASE = """
 <main>
 {main}

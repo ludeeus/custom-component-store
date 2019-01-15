@@ -3,12 +3,13 @@ import os
 import re
 import requests
 
+
 CACHE = {}
 PATH = '/config'
 
 
 async def get_data():
-    """Get version data."""
+    """Get data."""
     global CACHE
     try:
         value = {}
