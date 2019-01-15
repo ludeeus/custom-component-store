@@ -81,7 +81,6 @@ def migration_needed(component):
         old_format_file_location = "{}/{}/{}/{}.py".format(PATH,
                                                            'custom_components',
                                                            domain, platform)
-        print(old_format_file_location)
         if os.path.exists(old_format_file_location):
             value = True
     return value
