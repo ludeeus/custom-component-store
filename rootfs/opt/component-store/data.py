@@ -98,6 +98,8 @@ def get_local_components():
             components.append("{}{}".format('/custom_components/', domain))
         platforms = os.listdir(base + domain)
         for platform in platforms:
+            if '.py' in domain:
+                continue
             components.append("{}{}/{}".format('/custom_components/', domain, platform))
     for item in components:
         if get_local_version(item) is not None:
