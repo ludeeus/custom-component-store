@@ -18,22 +18,18 @@ async def about_view(request):
     if not installed_version:
         installed_version = 'dev'
 
-    newest_version = '<a href="https://github.com/ludeeus/custom-component-store/releases/tag/{version}" target="_blank">{version}</a>'.format(version=data.get_docker_version())
-
     content = """
         <div class="row"><div class="col s12">
             <div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">About</span>
                 <p>
                     This tool can help you manage your 'custom_components' for Home Assistant.</br>
                     This will <b>only</b> manage the '.py' files for you under 'custom_components/', </br>you still need to manually add/remove entries in 'configuration.yaml'.</br></br>
+                    All components that are trackable with this has a "REPOSITORY" button, use that to verify the content before installing/upgrading.</br>
+                    Do <b>not</b> install/upgrade something with this that you do not trust.</br></br>
                     <hr>
                     <div class="row" style="margin-bottom: 2px;">
                         <div class="col s5">Installed version:</div>
                         <div class="col s7">{installed_version}</div>
-                    </div>
-                    <div class="row" style="margin-bottom: 2px;">
-                        <div class="col s5">Newest version:</div>
-                        <div class="col s7">{newest_version}</div>
                     </div>
                     <div class="row" style="margin-bottom: 2px;">
                         <div class="col s12"><a href="https://github.com/ludeeus/custom-component-store" target="_blank" >Project @ GitHub</a></div>
@@ -48,7 +44,7 @@ async def about_view(request):
                 <p>
                     All the components/platforms that you can manage with this needs to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a>, 
                     by default all components/platforms that folow the standard in the <a href="https://github.com/custom-components" target="_blank" >custom-component org. on GitHub</a> are managable, other components/platforms would need to be added to <a href="https://github.com/ludeeus/customjson" target="_blank" >customjson</a> before they can show up here.</br>
-                    The platform structure needs to be as embedded platforms to be shown here.
+                    The platform structure needs to be as embedded platforms to be managed here.
                 </p>
             </div></div>
 
@@ -77,7 +73,7 @@ async def about_view(request):
                 </p>
             </div></div>
         </div></div>
-    """.format(installed_version=installed_version, newest_version=newest_version)
+    """.format(installed_version=installed_version)
 
     html = base_html.TOP
     html += base_html.BASE.format(main=content)
@@ -98,7 +94,8 @@ async def installed_components_view(request):
 
     if installed:
         for component in installed:
-
+            if not components[component]['trackable']:
+                continue
             update = ''
             warning = ''
 
@@ -141,6 +138,34 @@ async def installed_components_view(request):
             """.format(update=update, component=component,
                        description=description, warning=warning)
 
+        style = 'float: right;'
+        message = '<i class="fa fa-info" style="color: darkred;"></i>'
+        tooltip = 'Could not find matching data about these'
+        warning = base_html.TOOLTIP.format(style=style, message=message,
+                                           tooltip=tooltip)
+
+        content += """
+          <div class="row">
+            <div class="col s12">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                <span class="card-title">Not trackable{warning}</span></a>
+            """.format(warning=warning)
+
+        for component in installed:
+            if components[component]['trackable']:
+                continue
+
+            content += """
+                    <li>{component} ({path})</li>
+             """.format(component=component,
+                        path=components[component]['local_location'])
+        content += """
+                    </div>
+                </div>
+            </div>
+          </div>
+        """
     else:
         content = """
           <div class="row">
@@ -168,6 +193,8 @@ async def the_store_view(request):
     content = ''
 
     for component in components:
+        if not components[component]['trackable']:
+            continue
         if components[component]['has_update']:
             update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
         else:

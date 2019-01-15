@@ -4,13 +4,14 @@ import re
 import requests
 
 
-CACHE = {}
 PATH = '/config'
+DOMAINS = ['sensor', 'switch', 'media_player', 'climate', 'light', 'binary_sensor']
+DATA = {}
 
 
 async def get_data():
     """Get data."""
-    global CACHE
+    global DATA
     try:
         value = {}
         url = 'https://raw.githubusercontent.com/custom-components/information'
@@ -46,6 +47,7 @@ async def get_data():
 
             for path in local_locations:
                 if path in local_components:
+                    local_components.remove(path)
                     local_path = path
                     installed = True
 
@@ -58,24 +60,35 @@ async def get_data():
             value[item]['has_update'] = has_update
             value[item]['has_update'] = has_update
             value[item]['installed'] = installed
-            CACHE = value
+            value[item]['trackable'] = True
+
+
+        for item in local_components:
+            local_location = item
+            name = item.split('/custom_components/')[1].split('.py')[0]
+
+            if '__init__' in name:
+                name = name.split('/')[0]
+
+            elif '/' in name:
+                domain = name.split('/')[0]
+                platform = name.split('/')[1]
+                if domain in DOMAINS:
+                    name = "{}.{}".format(domain, platform)
+                else:
+                    name = "{}.{}".format(domain, platform)
+
+            value[name] = {}
+            value[name]['trackable'] = False
+            value[name]['installed'] = True
+            value[name]['local_location'] = local_location
+
+        DATA = value
     except Exception as error:
         print("There was an issue getting new data!")
         print(error)
-    return CACHE
+    return DATA
 
-
-def get_docker_version():
-    """Get version published for docker."""
-    version = None
-    url = 'https://registry.hub.docker.com/v2/repositories/'
-    url += 'ludeeus/custom-component-store/tags/'
-    tags = requests.get(url).json()['results']
-    for tag in tags:
-        if tag['name'] not in ['latest', 'dev']:
-            version = tag['name']
-            break
-    return version
 
 def migration_needed(component):
     """Return bool if migration is needed."""
@@ -95,7 +108,6 @@ def get_local_components():
     """Local components and platforms."""
     base = PATH + '/custom_components/'
     components = []
-    accepted = []
     domains = []
     for domain in os.listdir(base):
         if '.py' in domain:
@@ -107,10 +119,7 @@ def get_local_components():
         for platform in os.listdir(base + domain):
             components.append("{}{}/{}".format('/custom_components/', domain, platform))
 
-    for item in components:
-        if get_local_version(item) is not None:
-            accepted.append(item)
-    return accepted
+    return components
 
 
 def get_local_version(path):
