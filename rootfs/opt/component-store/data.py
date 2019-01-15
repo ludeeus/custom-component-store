@@ -36,11 +36,8 @@ async def get_data():
             has_update = False
             version = None
 
-            embedded = value[item].get('embedded')
-            if embedded:
-                local_locations.append(value[item].get('embedded_path'))
-            if not local_locations:
-                local_locations.append(value[item].get('local_location'))
+            local_locations.append(value[item].get('embedded_path'))
+            local_locations.append(value[item].get('local_location'))
 
             for path in local_locations:
                 if path in local_components:
