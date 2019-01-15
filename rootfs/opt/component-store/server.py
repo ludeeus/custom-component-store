@@ -99,19 +99,25 @@ async def installed_components_view(request):
     if installed:
         for component in installed:
 
+            update = ''
+            warning = ''
+
+            if not components[component]['embedded']:
+                style = 'float: right;'
+                message = '<i class="fa fa-info" style="color: darkred;"></i>'
+                tooltip = 'Not managable'
+                warning = base_html.TOOLTIP.format(style=style, message=message,
+                                                   tooltip=tooltip)
+
             if data.migration_needed(component):
                 style = 'float: right;'
                 message = '<i class="fa fa-info" style="color: darkred;"></i>'
                 tooltip = 'Migration needed'
                 warning = base_html.TOOLTIP.format(style=style, message=message,
                                                    tooltip=tooltip)
-            else:
-                warning = ''
 
             if components[component]['has_update']:
                 update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
-            else:
-                update = ''
 
             description = components[component]['description']
 
