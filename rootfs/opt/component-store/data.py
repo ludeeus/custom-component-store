@@ -55,8 +55,9 @@ async def get_data():
             value[item]['has_update'] = has_update
             value[item]['installed'] = installed
             CACHE = value
-    except Exception:
+    except Exception as error:
         print("There was an issue getting new data!")
+        print(error)
     return CACHE
 
 
