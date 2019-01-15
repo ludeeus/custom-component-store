@@ -181,7 +181,7 @@ async def the_store_view(request):
     """View for 'The Store'."""
     print("Serving 'The Store' to ", request.headers.get('X-FORWARDED-FOR', None))
     components = await data.get_data()
-    content = ''
+    content = '<input id="search" type="text" placeholder="Search.." style="width: 95%;margin-left: 2.5%;margin-bottom: 2.5%;" autofocus>'
 
     for component in components:
         if not components[component]['trackable']:
