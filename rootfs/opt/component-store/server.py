@@ -98,7 +98,6 @@ async def installed_components_view(request):
             installed[component] = data.EXAMPLE[component]
 
     for component in installed:
-        print(component)
         if not installed[component]['trackable']:
             not_trackable[component] = installed[component]
             continue

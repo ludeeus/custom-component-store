@@ -149,8 +149,7 @@ def get_local_components():
         if not '.py' in component:
             continue
         accepted.append(component)
-
-    return components
+    return accepted
 
 
 def get_local_version(path):
