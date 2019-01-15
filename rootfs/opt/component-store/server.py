@@ -502,6 +502,6 @@ if __name__ == "__main__":
         APP.router.add_route('GET', r'/component/{component}/uninstall', uninstall_component)
         APP.router.add_route('GET', r'/component/{component}/migrate', migrate_component)
         APP.router.add_route('GET', r'/component/{component}/json', json)
-        web.run_app(APP, port=9999)
+        web.run_app(APP, port=9999, print=None)
     else:
         print("You need Home Assistant version 0.86 or newer to use this.")

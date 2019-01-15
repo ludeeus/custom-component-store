@@ -12,7 +12,5 @@ echo
 echo "Custom Component Store is running on port 8100"
 echo
 echo "-----------------------------------------"
-echo
-echo "The port shown in the message below is wrong, use 8100 or a port you specified with '-p'"
 
 exec nginx -g "daemon off;"
