@@ -8,6 +8,27 @@ PATH = '/config'
 DOMAINS = ['sensor', 'switch', 'media_player', 'climate', 'light', 'binary_sensor']
 DATA = {}
 
+EXAMPLE = {
+    "sensor.example": {
+        "trackable": True,
+        "embedded_path": "/custom_components/example/sensor.py",
+        "version": os.environ.get('VERSION'),
+        "installed": False,
+        "visit_repo": "https://github.com/ludeeus/custom-component-store",
+        "embedded_path_remote": "https://github.com/ludeeus/custom-component-store",
+        "changelog": "https://github.com/ludeeus/custom-component-store",
+        "embedded": True,
+        "has_update": False,
+        "local_location": "/custom_components/sensor/example.py",
+        "local_version": os.environ.get('VERSION'),
+        "author": {
+            "login": "ludeeus",
+            "html_url": "https://github.com/ludeeus"
+        },
+        "description": "Example sensor entity.",
+        "remote_location": "https://github.com/ludeeus/custom-component-store"
+    }
+}
 
 async def get_data():
     """Get data."""

@@ -45,6 +45,9 @@ STYLE = """
       font-weight: bolder;
       float: right;
     }
+    .container {
+        width: 95% !important;
+    }
     .attention {
       color: darkred !important;
       font-weight: bolder;

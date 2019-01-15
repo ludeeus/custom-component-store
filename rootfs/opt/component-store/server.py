@@ -85,99 +85,90 @@ async def installed_components_view(request):
     """Default/Installed view."""
     print("Serving default/Installed view")
     components = await data.get_data()
-    installed = []
+    installed = {}
+    not_trackable = {}
     content = ''
 
     for component in components:
         if components[component]['installed']:
-            installed.append(component)
+            installed[component] = components[component]
 
-    if installed:
-        for component in installed:
-            if not components[component]['trackable']:
-                continue
-            update = ''
-            warning = ''
+    if not installed:
+        for component in data.EXAMPLE:
+            installed[component] = data.EXAMPLE[component]
 
-            if not components[component]['embedded']:
-                style = 'float: right;'
-                message = '<i class="fa fa-info" style="color: darkred;"></i>'
-                tooltip = 'Not managable'
-                warning = base_html.TOOLTIP.format(style=style, message=message,
-                                                   tooltip=tooltip)
+    for component in installed:
+        print(component)
+        if not installed[component]['trackable']:
+            not_trackable[component] = installed[component]
+        update = ''
+        warning = ''
 
-            if data.migration_needed(component):
-                style = 'float: right;'
-                message = '<i class="fa fa-info" style="color: darkred;"></i>'
-                tooltip = 'Migration needed'
-                warning = base_html.TOOLTIP.format(style=style, message=message,
-                                                   tooltip=tooltip)
+        if not ['embedded']:
+            style = 'float: right;'
+            message = '<i class="fa fa-info" style="color: darkred;"></i>'
+            tooltip = 'Not managable'
+            warning = base_html.TOOLTIP.format(style=style, message=message,
+                                               tooltip=tooltip)
 
-            if components[component]['has_update']:
-                update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
+        if data.migration_needed(component):
+            style = 'float: right;'
+            message = '<i class="fa fa-info" style="color: darkred;"></i>'
+            tooltip = 'Migration needed'
+            warning = base_html.TOOLTIP.format(style=style, message=message,
+                                               tooltip=tooltip)
 
-            description = components[component]['description']
+        if installed[component]['has_update']:
+            update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
 
-            if description is not None and ':' in description:
-                description = description.split(':')[-1]
+        description = installed[component]['description']
 
-            content += """
-              <div class="row">
-                <div class="col s12">
-                  <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                      <span class="card-title">{update}{component}{warning}</span>
-                      <p>{description}</p>
-                    </div>
-                    <div class="card-action">
-                      <a href="/component/{component}">More info</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            """.format(update=update, component=component,
-                       description=description, warning=warning)
-
-        style = 'float: right;'
-        message = '<i class="fa fa-info" style="color: darkred;"></i>'
-        tooltip = 'Could not find matching data about these'
-        warning = base_html.TOOLTIP.format(style=style, message=message,
-                                           tooltip=tooltip)
+        if description is not None and ':' in description:
+            description = description.split(':')[-1]
 
         content += """
-          <div class="row">
+            <div class="row">
             <div class="col s12">
-              <div class="card blue-grey darken-1">
+                <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">{update}{component}{warning}</span>
+                    <p>{description}</p>
+                </div>
+                <div class="card-action">
+                    <a href="/component/{component}">More info</a>
+                </div>
+                </div>
+            </div>
+            </div>
+        """.format(update=update, component=component,
+                   description=description, warning=warning)
+
+    style = 'float: right;'
+    message = '<i class="fa fa-info" style="color: darkred;"></i>'
+    tooltip = 'Could not find matching data about these'
+    warning = base_html.TOOLTIP.format(style=style, message=message,
+                                       tooltip=tooltip)
+
+    if not_trackable:
+        content += """
+            <div class="row">
+            <div class="col s12">
+                <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                 <span class="card-title">{warning}</span></a>
             """.format(warning=warning)
 
-        for component in installed:
-            if components[component]['trackable']:
-                continue
+        for component in not_trackable:
 
             content += """
                     <li>{component} ({path})</li>
-             """.format(component=component,
-                        path=components[component]['local_location'][1:])
+                """.format(component=component,
+                        path=installed[component]['local_location'][1:])
         content += """
                     </div>
                 </div>
             </div>
-          </div>
-        """
-    else:
-        content = """
-          <div class="row">
-            <div class="col s12">
-              <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                  <span class="card-title">No components installed :(</span></a>
-                  <p>Go to "The Store" to get some awesome components.</p>
-                </div>
-              </div>
             </div>
-          </div>
         """
     html = base_html.TOP
     html += base_html.BASE.format(main=content)
@@ -239,7 +230,10 @@ async def component_view(request):
     """View for single component."""
     component = request.match_info['component']
     print("Serving view for", component)
-    components = await data.get_data()
+    if component == 'sensor.example':
+        components = data.EXAMPLE
+    else:
+        components = await data.get_data()
 
     if component in components:
 
@@ -361,6 +355,9 @@ async def component_view(request):
             attention = """<p class="attention">{}</p></br>""".format(attention)
         else:
             attention = ''
+
+        if component == 'sensor.example':
+            button1 = ''
 
         content = """
             <div class="row">
