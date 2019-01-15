@@ -9,7 +9,7 @@ COPY requirements.txt /tmp/
 
 # ENV
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
-ENV VERSION="0.4.0"
+ENV VERSION="0.5.0"
 
 # Build
 RUN \
