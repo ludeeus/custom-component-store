@@ -2,10 +2,16 @@
 
 STYLE = """
 <style>
-    @media (max-device-width : 1024px) {
-        main {
+    @media (max-device-width : 1024px) main {
             width: 100%;
         }
+    nav .brand-logo {
+        left: 0px;
+        -webkit-transform: none;
+        transform: none;
+        }
+    .hide-on-med-and-down {
+        display: unset !important;
     }
     body {
         padding-left: 5px !important;
@@ -35,9 +41,6 @@ STYLE = """
         color: white;
     }
     footer {
-        margin-right: 5px;
-    }
-    header {
         margin-right: 5px;
     }
     .uninstall {

@@ -13,17 +13,19 @@ TOP = """
     {style}
 </head>
 <body>
-<header>
-  <nav>
-    <div class="nav-wrapper">
-      <a href="/" class="brand-logo">&nbsp;&nbsp;&nbsp;Custom Components</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="/">Installed</a></li>
-        <li><a href="/store">"The Store"</a></li>
-        <li><a href="/about">About</a></li>
-      </ul>
-    </div>
-  </nav>
+<header style="padding-bottom: 2.5%;">
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <a href="/" class="brand-logo">&nbsp;&nbsp;&nbsp;Custom Components</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="/">Installed</a></li>
+          <li><a href="/store">"The Store"</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 </header>
 """.format(style=STYLE)
 
