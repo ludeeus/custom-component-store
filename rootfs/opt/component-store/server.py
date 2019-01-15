@@ -159,7 +159,7 @@ async def installed_components_view(request):
             content += """
                     <li>{component} ({path})</li>
              """.format(component=component,
-                        path=components[component]['local_location'])
+                        path=components[component]['local_location'][1:])
         content += """
                     </div>
                 </div>
