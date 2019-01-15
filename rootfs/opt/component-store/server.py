@@ -427,8 +427,13 @@ async def install_component(request):
         localpath = PATH + comp_data[component]['embedded_path']
         remotepath = comp_data[component]['embedded_path_remote']
 
-        if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
-            os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
+        if '.' in component:
+            if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
+                os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
+
+        if '__init__.py' in comp_data[component]['embedded_path']:
+            if not os.path.exists(PATH + '/custom_components/' + component):
+                os.makedirs(PATH + '/custom_components/' + component)
 
         with open(localpath, 'wb') as file:
             file.write(requests.get(remotepath).content)
@@ -458,8 +463,9 @@ async def migrate_component(request):
     old_path = PATH + comp_data[component]['local_location']
     new_path = PATH + comp_data[component]['embedded_path']
     print('From', old_path, 'to', new_path)
-    if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
-        os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
+    if '.' in component:
+        if not os.path.exists(PATH + '/custom_components/' + component.split('.')[1]):
+            os.makedirs(PATH + '/custom_components/' + component.split('.')[1])
     os.rename(old_path, new_path)
     raise web.HTTPFound('/component/' + component)
 
