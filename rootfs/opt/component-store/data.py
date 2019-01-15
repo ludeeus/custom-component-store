@@ -21,12 +21,16 @@ async def get_data():
 
         if web_request:
             for item in web_request:
+                if web_request[item]['version'] is None:
+                    continue
                 value[item] = web_request[item]
 
         extra = os.environ.get('EXTRA')
         if extra:
             extra_request = requests.get(extra).json()
             for item in extra_request:
+                if extra_request[item]['version'] is None:
+                    continue
                 value[item] = extra_request[item]
 
 
