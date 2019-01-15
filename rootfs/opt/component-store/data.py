@@ -129,6 +129,7 @@ def get_local_components():
     """Local components and platforms."""
     base = PATH + '/custom_components/'
     components = []
+    accepted = []
     domains = []
     for domain in os.listdir(base):
         if '.py' in domain:
@@ -139,6 +140,15 @@ def get_local_components():
     for domain in domains:
         for platform in os.listdir(base + domain):
             components.append("{}{}/{}".format('/custom_components/', domain, platform))
+
+    for component in components:
+        if '__pycache__' in component:
+            continue
+        if '.pyc' in component:
+            continue
+        if not '.py' in component:
+            continue
+        accepted.append(component)
 
     return components
 
