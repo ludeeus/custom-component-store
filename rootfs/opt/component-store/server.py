@@ -214,8 +214,11 @@ async def component_view(request):
 
         toast = """ onclick=\"M.toast({html: 'Installing', displayLength: 10000})\""""
 
-        button1 = button.format(target='/component/'+component+'/install',
-                                extra=toast, text='INSTALL')
+        modal = button.format(target='/component/'+component+'/install',
+                              extra='', text='INSTALL')
+
+        button1 = button.format(target='#',
+                                extra=toast+' id=isntallbtn', text='INSTALL')
 
         button2 = button.format(target=repository, extra='target="_blank"',
                                 text='REPOSITORY')
@@ -245,8 +248,12 @@ async def component_view(request):
         if has_update:
             update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
             toast = " onclick='M.toast({html: 'Updating', displayLength: 10000)'"
-            button1 = button.format(target='/component/'+component+'/update',
+
+            modal = button.format(target='/component/'+component+'/update',
                                     extra=toast, text='UPDATE')
+
+            button1 = button.format(target='#',
+                                    extra=toast+' id=isntallbtn', text='UPDATE')
 
             button3 = button.format(target=changelog, extra='target="_blank"',
                                     text='RELEASE NOTES')
@@ -339,6 +346,27 @@ async def component_view(request):
                    image=image, more_info=more_info, installed_version=installed_version,
                    author=author, published_version=published_version, button1=button1,
                    button2=button2, button3=button3, button4=button4, attention=attention)
+
+        if installed:
+            instype = 'upgrade'
+        else:
+            instype = 'install'
+
+        content += """
+        <div id="InstallModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Do <b>not</b> {type} this unless you trust the source.</br>
+            </br>
+            Click the "REPOSITORY" to check out the source, before installing this.</p>
+            This {type} will <b>not</b> change <i>anything</i> in your configuration, you still need to manually update that.</br></br>
+            <div class="card-action">
+                {button}
+            </div>
+        </div>
+
+        </div>
+        """.format(button=modal, type=instype)
     else:
         content = """
           <div class="row">

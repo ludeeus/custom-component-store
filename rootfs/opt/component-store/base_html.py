@@ -41,6 +41,22 @@ END = """
     <i>This site and the items here is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
   </div>
 </footer>
+<script>
+  var modal = document.getElementById('InstallModal');
+  var btn = document.getElementById("isntallbtn");
+  var span = document.getElementsByClassName("close")[0];
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
 </body>
 """
 
