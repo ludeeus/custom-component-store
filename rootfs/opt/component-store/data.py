@@ -92,6 +92,8 @@ def get_local_components():
     accepted = []
     domains = os.listdir(base)
     for domain in domains:
+        if '.py' in domain:
+            components.append("{}{}".format('/custom_components/', domain))
         platforms = os.listdir(base + domain)
         for platform in platforms:
             components.append("{}{}/{}".format('/custom_components/', domain, platform))
