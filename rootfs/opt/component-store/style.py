@@ -2,7 +2,7 @@
 
 STYLE = """
 <style>
-    @media only screen and (max-device-width : 1024px) {
+    @media (max-device-width : 1024px) {
         main {
             width: 100%;
         }
@@ -16,7 +16,7 @@ STYLE = """
     }
     main {
       flex: 1 0 auto;
-      width: 50%;
+      width: 60%;
       margin: auto;
     }
     .fa {
