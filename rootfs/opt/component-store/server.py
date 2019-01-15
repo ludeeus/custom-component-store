@@ -87,7 +87,7 @@ async def installed_components_view(request):
     components = await data.get_data()
     installed = {}
     not_trackable = {}
-    content = ''
+    content = base_html.SEARCH
 
     for component in components:
         if components[component]['installed']:
@@ -181,7 +181,7 @@ async def the_store_view(request):
     """View for 'The Store'."""
     print("Serving 'The Store' to ", request.headers.get('X-FORWARDED-FOR', None))
     components = await data.get_data()
-    content = '<input id="search" type="text" placeholder="Search.." style="width: 95%;margin-left: 2.5%;margin-bottom: 2.5%;" autofocus>'
+    content = base_html.SEARCH
 
     for component in components:
         if not components[component]['trackable']:

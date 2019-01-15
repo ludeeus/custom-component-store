@@ -61,7 +61,7 @@ END = """
 </script>
 <script>
 $(document).ready(function(){
-  $("#search").on("keyup", function() {
+  $("#componentsearch").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("main .row").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
@@ -77,4 +77,10 @@ TOOLTIP = """
       {message}
       <span class="tooltiptext">{tooltip}</span>
   </div>
+"""
+
+SEARCH = """
+<input id="componentsearch" type="text" placeholder="Search.." 
+style="width: 95%;margin-left: 2.5%;margin-bottom: 2.5%;margin-top: -2.5%;"
+autofocus>
 """
