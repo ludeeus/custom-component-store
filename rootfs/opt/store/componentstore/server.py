@@ -97,22 +97,20 @@ def run_server(port=9999):
 
     if not os.path.exists(version_path):
         REASON = 'ha_not_found'
-        print("Could not find Home Assistant configuration")
 
     elif not os.path.exists(PATH):
         REASON = 'no_path'
-        print(PATH, "does not exist...")
 
     else:
         with open(version_path) as version_file:
             version = version_file.readlines()
             version = int(version[0].split('.')[1])
 
+        if version <= target:
+            REASON = 'version'
+
         if not os.path.exists(directory):
             os.makedirs(directory)
-
-    if version <= target:
-        REASON = 'version'
 
     if REASON is None:
         app.router.add_route(

@@ -6,7 +6,7 @@ import componentstore.resources.html as load
 async def view():
     """View for error."""
 
-    if REASON == 'versison':
+    if REASON == 'version':
         reason = "You need Home Assistant version 0.86 of newer to use this."
     elif REASON == 'no_path':
         reason = "Defined HA configuration path not found."
