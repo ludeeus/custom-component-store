@@ -9,7 +9,7 @@ COPY requirements.txt /tmp/
 
 # ENV
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
-ENV VERSION="0.6.0"
+ENV VERSION="0.6.1"
 
 # Build
 RUN \
@@ -27,7 +27,9 @@ RUN \
     && rm -f -r /tmp/* \
     \
     && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz \
-        | tar xvzf - -C / 
+        | tar xvzf - -C / \
+    \
+    && python3 /opt/store/setup.py install
 
 # Entrypoint
 ENTRYPOINT [ "/init" ]

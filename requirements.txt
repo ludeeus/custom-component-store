@@ -1,3 +1,2 @@
 aiohttp==3.5.4
 requests2==2.16.0
-communitystore==0.6.0

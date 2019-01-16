@@ -41,14 +41,6 @@ If you use the generic hassio installer, use the instructions for docker.
 
 If you use HassOS use the [Community SSH add-on](https://github.com/hassio-addons/addon-ssh) to run these.
 
-### Other
-
-**NB!: This method will not have authentication!**
-
-**Python version 3.5.3+ is required.**
-
-1. Install `customcomponentstore` with pip
-1. Run `customcomponentstore`
 
 ## Notice
 
