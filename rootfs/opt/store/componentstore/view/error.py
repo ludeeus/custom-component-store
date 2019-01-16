@@ -7,7 +7,7 @@ async def view():
     """View for error."""
 
     if REASON == 'version':
-        reason = "You need Home Assistant version 0.86 of newer to use this."
+        reason = "You need Home Assistant version 0.86 or newer to use this."
     elif REASON == 'no_path':
         reason = "Defined HA configuration path not found."
     elif REASON == 'ha_not_found':
