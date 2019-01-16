@@ -1,6 +1,5 @@
 """Base HTML"""
 #from style import STYLE
-from componentstore.server import CURRENT_PATH
 from componentstore.resources.style import STYLE
 
 

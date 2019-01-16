@@ -5,9 +5,8 @@ import componentstore.functions.data as data
 import componentstore.functions.manager as manager
 from aiohttp import web
 
-PATH = '/config'
 
-CURRENT_PATH = os.path.dirname(__file__)
+PATH = '/config'
 
 
 async def about_view(request):  # pylint: disable=W0613
