@@ -28,12 +28,17 @@ async def view():
         else:
             warning = ''
 
+        meta = """
+        <p name="author" style="display: none;">{author}</p>
+        """.format(author=components[component]['author']['login'])
+
         content += """
             <div class="row">
             <div class="col s12">
                 <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                     <span class="card-title">{update}{component}{warning}</span>
+                    {meta}
                     <p>{description}</p>
                 </div>
                 <div class="card-action">
@@ -42,8 +47,9 @@ async def view():
                 </div>
             </div>
             </div>
-        """.format(update=update, component=component,
-                   description=description, warning=warning)
+        """.format(
+            update=update, component=component, description=description,
+            warning=warning, meta=meta)
 
     html = load.TOP
     html += load.BASE.format(main=content)

@@ -76,7 +76,7 @@ async def migrate_component(request):
     raise web.HTTPFound('/component/' + component)
 
 
-def run_server(port=9999, path='/config'):
+def run_server(port=9999):
     """Run the webserver."""
     directory = PATH + '/custom_components'
     version_path = PATH + '/.HA_VERSION'

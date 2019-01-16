@@ -50,12 +50,17 @@ async def view():
         if description is not None and ':' in description:
             description = description.split(':')[-1]
 
+        meta = """
+        <p name="author" style="display: none;">{author}</p>
+        """.format(author=installed[component]['author']['login'])
+
         content += """
             <div class="row">
             <div class="col s12">
                 <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                     <span class="card-title">{update}{component}{warning}</span>
+                    {meta}
                     <p>{description}</p>
                 </div>
                 <div class="card-action">
@@ -65,7 +70,7 @@ async def view():
             </div>
             </div>
         """.format(update=update, component=component,
-                   description=description, warning=warning)
+                   description=description, warning=warning, meta=meta)
 
     style = 'float: right;'
     message = '<i class="fa fa-info" style="color: darkred;"></i>'
