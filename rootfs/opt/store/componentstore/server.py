@@ -29,7 +29,7 @@ async def installed_components_view(request):  # pylint: disable=W0613
 
 async def the_store_view(request):  # pylint: disable=W0613
     """View for 'The Store'."""
-    from componentstore.view.component.the_componentstore import view
+    from componentstore.view.component.the_store import view
     print("Serving 'The Store'")
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
