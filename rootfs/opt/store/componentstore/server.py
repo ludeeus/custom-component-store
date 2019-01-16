@@ -111,7 +111,7 @@ def run_server(port=9999):
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-    if version >= target:
+    if version <= target:
         REASON = 'version'
 
     if REASON is None:
@@ -138,4 +138,6 @@ def run_server(port=9999):
     else:
         app.router.add_route(
             'GET', r'/', error_view)
+        app.router.add_route(
+            'GET', r'/{route}', error_view)
     web.run_app(app, port=port, print=None)

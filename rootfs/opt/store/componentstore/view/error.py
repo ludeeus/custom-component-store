@@ -1,15 +1,10 @@
-"""View for about."""
-from componentstore.const import VERSION
+"""View for error."""
 from componentstore.server import REASON
 import componentstore.resources.html as load
 
 
 async def view():
-    """View for about."""
-
-    installed_version = VERSION
-    if not installed_version:
-        installed_version = 'dev'
+    """View for error."""
 
     if REASON == 'versison':
         reason = "You need Home Assistant version 0.86 of newer to use this."
@@ -27,13 +22,14 @@ async def view():
                     <div class="card-content white-text">
                         <span class="card-title">Something went wrong</span>
                         <p>
-                            {reason}
+                            {reason}</br></br>
+                            code: {reasoncode}
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-    """.format(reason=reason)
+    """.format(reason=reason, reasoncode=REASON)
 
     html = load.TOP
     html += load.BASE.format(main=content)
