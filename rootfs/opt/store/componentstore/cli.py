@@ -9,7 +9,7 @@ import click
     '--configdir', '-C', default='/config', help='Config dir.')
 def cli(port, configdir):
     """CLI for this package."""
-    from store.server import run_server
+    from componentstore.server import run_server
     run_server(port, configdir)
 
 

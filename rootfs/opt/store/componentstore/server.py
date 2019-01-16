@@ -1,8 +1,8 @@
-"""Custom Components store."""
+"""Custom Components componentstore."""
 import os
 
-import store.functions.data as data
-import store.functions.manager as manager
+import componentstore.functions.data as data
+import componentstore.functions.manager as manager
 from aiohttp import web
 
 PATH = '/config'
@@ -12,7 +12,7 @@ CURRENT_PATH = os.path.dirname(__file__)
 
 async def about_view(request):  # pylint: disable=W0613
     """View for about."""
-    from store.view.about import view
+    from componentstore.view.about import view
     print("Serving about")
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
@@ -20,7 +20,7 @@ async def about_view(request):  # pylint: disable=W0613
 
 async def installed_components_view(request):  # pylint: disable=W0613
     """Default/Installed view."""
-    from store.view.component.installed import view
+    from componentstore.view.component.installed import view
     print("Serving default/Installed view")
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
@@ -29,7 +29,7 @@ async def installed_components_view(request):  # pylint: disable=W0613
 
 async def the_store_view(request):  # pylint: disable=W0613
     """View for 'The Store'."""
-    from store.view.component.the_store import view
+    from componentstore.view.component.the_componentstore import view
     print("Serving 'The Store'")
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
@@ -37,7 +37,7 @@ async def the_store_view(request):  # pylint: disable=W0613
 
 async def component_view(request):
     """View for single component."""
-    from store.view.component.component import view
+    from componentstore.view.component.component import view
     component = request.match_info['component']
     print("Serving view for", component)
     html = await view(component)

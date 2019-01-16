@@ -1,6 +1,6 @@
 """Base HTML"""
 #from style import STYLE
-from store.server import CURRENT_PATH
+from componentstore.server import CURRENT_PATH
 
 
 STYLE = open(CURRENT_PATH+'/resources/style.css', 'r').read()

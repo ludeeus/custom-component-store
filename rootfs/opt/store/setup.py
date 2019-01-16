@@ -3,8 +3,8 @@ import setuptools
 
 
 setuptools.setup(
-    name="store",
-    version="0.0.0",
+    name="componentstore",
+    version="1.0.0",
     description="",
     long_description="",
     long_description_content_type="text/markdown",
@@ -12,7 +12,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'store = store.cli:cli'
+            'componentstore = componentstore.cli:cli'
         ]
     }
 )

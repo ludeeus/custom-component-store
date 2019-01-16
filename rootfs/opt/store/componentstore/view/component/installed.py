@@ -1,7 +1,7 @@
 """Default/Installed view."""
-from store.functions.data import get_data, migration_needed
-from store.const import EXAMPLE
-import store.resources.html as load
+from componentstore.functions.data import get_data, migration_needed
+from componentstore.const import EXAMPLE
+import componentstore.resources.html as load
 
 
 async def view():

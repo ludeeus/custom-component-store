@@ -1,8 +1,8 @@
 """File manager."""
 import os
 import requests
-from store.const import PATH
-from store.functions.data import get_data
+from componentstore.const import PATH
+from componentstore.functions.data import get_data
 
 
 async def install_component(component):

@@ -2,7 +2,7 @@
 import os
 import re
 import requests
-from store.const import DOMAINS, PATH
+from componentstore.const import DOMAINS, PATH
 
 
 DATA = {}

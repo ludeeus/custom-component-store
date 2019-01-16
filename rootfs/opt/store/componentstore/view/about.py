@@ -1,6 +1,6 @@
 """View for about."""
-from store.const import VERSION
-import store.resources.html as load
+from componentstore.const import VERSION
+import componentstore.resources.html as load
 
 
 async def view():

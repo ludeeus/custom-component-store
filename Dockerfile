@@ -29,6 +29,8 @@ RUN \
     && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz \
         | tar xvzf - -C / \
     \
+    && cd /opt/store \
+    \
     && python3 /opt/store/setup.py install
 
 # Entrypoint

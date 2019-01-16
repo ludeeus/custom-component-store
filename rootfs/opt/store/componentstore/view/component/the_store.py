@@ -1,6 +1,6 @@
 """View for 'The Store'."""
-import store.resources.html as load
-from store.functions.data import get_data
+import componentstore.resources.html as load
+from componentstore.functions.data import get_data
 
 async def view():
     """View for 'The Store'."""
