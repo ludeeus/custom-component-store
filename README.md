@@ -47,9 +47,8 @@ If you use HassOS use the [Community SSH add-on](https://github.com/hassio-addon
 
 **Python version 3.5.3+ is required.**
 
-1. Download this repo from github.
-1. Change `PATH = '/config'` in `rootfs/opt/component-store/data.py` to match where your HA config is.
-1. Run the webserver `python3 rootfs/opt/component-store/data.py`, the user you run this as needs to be able to write to the config dir.
+1. Install `customcomponentstore` with pip
+1. Run `customcomponentstore`
 
 ## Notice
 
