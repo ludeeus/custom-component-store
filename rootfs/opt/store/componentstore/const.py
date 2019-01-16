@@ -4,6 +4,7 @@ import os
 PATH = '/config'
 
 VERSION = os.environ.get('VERSION')
+DEMO = os.environ.get('DEMO')
 
 DOMAINS = ['sensor', 'switch', 'media_player', 'climate', 'light',
            'binary_sensor']

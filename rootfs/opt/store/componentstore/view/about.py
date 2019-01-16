@@ -1,5 +1,5 @@
 """View for about."""
-from componentstore.const import VERSION
+from componentstore.const import VERSION, DEMO
 import componentstore.resources.html as load
 
 
@@ -9,6 +9,8 @@ async def view():
     installed_version = VERSION
     if not installed_version:
         installed_version = 'dev'
+    if DEMO:
+        installed_version = installed_version + '(DEMO)'
 
 #------------------------------------------------------------------------------
 
