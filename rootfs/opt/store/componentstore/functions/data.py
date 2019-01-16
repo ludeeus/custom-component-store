@@ -13,8 +13,12 @@ async def get_data():  # pylint: disable=R0912,R0914,R0915
     global DATA  # pylint: disable=W0603
     try:
         value = {}
-        url = 'https://raw.githubusercontent.com/custom-components/information'
-        url += '/master/repos.json'
+        url = 'https://raw.githubusercontent.com/'
+        url += 'ludeeus/data/'
+        url += 'master/'
+        url += 'custom-component-store/'
+        url += 'V1'
+        url += '/data.json'
         web_request = requests.get(url).json()
 
         local_components = await get_local_components()
