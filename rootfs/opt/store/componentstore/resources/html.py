@@ -1,9 +1,7 @@
 """Base HTML"""
 #from style import STYLE
 from componentstore.server import CURRENT_PATH
-
-
-STYLE = open(CURRENT_PATH+'/resources/style.css', 'r').read()
+from componentstore.resources.style import STYLE
 
 
 TOP = """

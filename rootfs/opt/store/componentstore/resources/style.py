@@ -1,3 +1,7 @@
+"""Style"""
+
+
+STYLE = """
 nav .brand-logo {
 left: 0px;
 -webkit-transform: none;
@@ -146,3 +150,4 @@ padding: 8px;
 tr:nth-child(even) {
 background-color: #dddddd;
 }
+"""
