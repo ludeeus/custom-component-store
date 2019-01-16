@@ -7,6 +7,15 @@ from aiohttp import web
 
 
 PATH = '/config'
+REASON = None
+
+
+async def error_view(request):  # pylint: disable=W0613
+    """View for about."""
+    from componentstore.view.error import view
+    print("Serving error")
+    html = await view()
+    return web.Response(body=html, content_type="text/html", charset="utf-8")
 
 
 async def about_view(request):  # pylint: disable=W0613
@@ -78,15 +87,20 @@ async def migrate_component(request):
 
 def run_server(port=9999):
     """Run the webserver."""
+    global REASON  # pylint: disable=W0603
     directory = PATH + '/custom_components'
     version_path = PATH + '/.HA_VERSION'
     version = 0
     target = 86
 
+    app = web.Application()
+
     if not os.path.exists(version_path):
+        REASON = 'ha_not_found'
         print("Could not find Home Assistant configuration")
 
     elif not os.path.exists(PATH):
+        REASON = 'no_path'
         print(PATH, "does not exist...")
 
     else:
@@ -98,7 +112,9 @@ def run_server(port=9999):
             os.makedirs(directory)
 
     if version >= target:
-        app = web.Application()
+        REASON = 'version'
+
+    if REASON is None:
         app.router.add_route(
             'GET', r'/', installed_components_view)
         app.router.add_route(
@@ -119,6 +135,7 @@ def run_server(port=9999):
             'GET', r'/json', json)
         app.router.add_route(
             'GET', r'/store', the_store_view)
-        web.run_app(app, port=port, print=None)
     else:
-        print("You need Home Assistant version 0.86 or newer to use this.")
+        app.router.add_route(
+            'GET', r'/', error_view)
+    web.run_app(app, port=port, print=None)
