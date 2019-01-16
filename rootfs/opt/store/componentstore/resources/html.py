@@ -1,7 +1,17 @@
 """Base HTML"""
-#from style import STYLE
 from componentstore.resources.style import STYLE
 
+
+SCRIPT = """
+$(document).ready(function(){
+  $("#componentsearch").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("main .row").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+"""
 
 TOP = """
 <head>
@@ -12,6 +22,9 @@ TOP = """
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    {script}
+    </script>
     <style>
     {style}
     </style>
@@ -31,60 +44,163 @@ TOP = """
     </nav>
   </div>
 </header>
-""".format(style=STYLE)
+""".format(script=SCRIPT, style=STYLE)
 
 
 BASE = """
 <main>
-{main}
+{}
 </main>
 """
 
 
 END = """
-<footer class="page-footer blue-grey darken-1">
-  <div class="container" style="padding-bottom: 15px;">
-    <i>This site and the items here is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
-  </div>
-</footer>
-<script>
-  var modal = document.getElementById('InstallModal');
-  var btn = document.getElementById("isntallbtn");
-  var span = document.getElementsByClassName("close")[0];
-  btn.onclick = function() {
-    modal.style.display = "block";
-  }
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-</script>
-<script>
-$(document).ready(function(){
-  $("#componentsearch").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("main .row").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
+  <footer class="page-footer blue-grey darken-1">
+    <div class="container" style="padding-bottom: 15px;">
+      <i>This site and the items here is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.</i>
+    </div>
+  </footer>
 </body>
 """
 
+
 TOOLTIP = """
-  <div class="tooltip" style="{style}">
-      {message}
-      <span class="tooltiptext">{tooltip}</span>
-  </div>
+<div class="tooltip" style="float: right;">
+  <i class="fa fa-info" style="color: darkred;"></i>
+  <span class="tooltiptext">{}</span>
+</div>
 """
 
-SEARCH = """
-<input id="componentsearch" type="text" placeholder="Search.." 
+
+SEARCHBAR = """
+<input id="componentsearch"
+type="text"
+placeholder="Search.."
 style="width: 95%;margin-left: 2.5%;margin-bottom: 2.5%;margin-top: -2.5%;"
 autofocus>
+"""
+
+
+LINK = """
+<a href="{url}" target="{target}" class="{htmlclass}" style="{style}" id="{id}" {extra}>{text}</a>
+"""
+
+IMAGE = """
+<img src="{}"</a>
+"""
+
+TOAST = """
+onclick="M.toast({html: 'MESSAGE', displayLength: 10000})"
+"""
+
+
+ATTENTION = """
+<span class="attention">{}</span></br>
+"""
+
+
+TEXT = """
+<p class="text">{}</p>
+"""
+
+META = """
+<p name="{type}" style="display: none;">{text}</p>
+"""
+
+
+BASE_CARD = """
+<div class="row">
+  <div class="col s12">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title">{title}</span>
+        {content}
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+
+BUTTON_CARD = """
+<div class="row">
+  <div class="col s12">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title">{title}</span>
+        {content}
+      </div>
+      <div class="card-action">
+        {buttons}
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+
+NO_TITLE_CARD = """
+<div class="row">
+  <div class="col s12">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        {}
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+MODAL_SCRIPT = """
+<script>
+var modal = document.getElementById('InstallModal');
+var btn = document.getElementById("isntallbtn");
+var span = document.getElementsByClassName("close")[0];
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+span.onclick = function() {
+  modal.style.display = "none";
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+"""
+
+MODAL = """
+<div id="InstallModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Do <b>not</b> {type} this unless you trust the source.
+    </br></br>
+    Click the "REPOSITORY" to check out the source, before installing this.</p>
+    This {type} will <b>not</b> change <i>anything</i> in your configuration, 
+    you still need to manually update that.</br></br>
+    <div class="card-action">
+        <a href="/component/{component}/{type}">{text}</a>
+    </div>
+</div>
+</div>
+"""
+
+UPDATEICON = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
+COFFEEICON = '<i class="fa fa-coffee">&nbsp;</i>'
+LINE = '<li id={type}>{text}</li>'
+BREAK = '</br>'
+HR = '<hr>'
+
+LIST = """
+<div class="row">
+  <div class="col s12">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title">{title}</span></a>
+        {lines}
+      </div>
+    </div>
+  </div>
+</div>
 """

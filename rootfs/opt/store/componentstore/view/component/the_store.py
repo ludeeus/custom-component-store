@@ -1,58 +1,45 @@
 """View for 'The Store'."""
 import componentstore.resources.html as load
-from componentstore.functions.data import get_data
+from componentstore.functions.data import get_data, migration_needed
 
 async def view():
     """View for 'The Store'."""
 
     components = await get_data()
-    content = load.SEARCH
+    content = load.SEARCHBAR
 
     for component in components:
+        cardtitle = ''
+
         if not components[component]['trackable']:
             continue
+
         if components[component]['has_update']:
-            update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
-        else:
-            update = ''
-        description = components[component]['description']
-        if description is not None and ':' in description:
-            description = description.split(':')[-1]
+            cardtitle += load.UPDATEICON
 
-        if not components[component]['embedded']:
-            style = 'float: right;'
-            message = '<i class="fa fa-info" style="color: darkred;"></i>'
-            tooltip = 'Not managable'
-            warning = load.TOOLTIP.format(
-                style=style, message=message, tooltip=tooltip)
-        else:
-            warning = ''
+        cardtitle += component
 
-        meta = """
-        <p name="author" style="display: none;">{author}</p>
-        """.format(author=components[component]['author']['login'])
+        needs_migration = await migration_needed(component)
 
-        content += """
-            <div class="row">
-            <div class="col s12">
-                <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                    <span class="card-title">{update}{component}{warning}</span>
-                    {meta}
-                    <p>{description}</p>
-                </div>
-                <div class="card-action">
-                    <a href="/component/{component}">More info</a>
-                </div>
-                </div>
-            </div>
-            </div>
-        """.format(
-            update=update, component=component, description=description,
-            warning=warning, meta=meta)
+        if needs_migration:
+            cardtitle += load.TOOLTIP.format('Migration needed')
+
+        elif not components[component]['embedded']:
+            cardtitle += load.TOOLTIP.format('Not managable')
+
+        cardcontent = load.META.format(
+            type='author', text=components[component]['author']['login'])
+
+        cardcontent += load.TEXT.format(components[component]['description'])
+        cardbutton = load.LINK.format(
+            url='/component/'+component, target='_self',
+            style='', id='', htmlclass='', extra='', text='More info')
+
+        content += load.BUTTON_CARD.format(
+            title=cardtitle, content=cardcontent, buttons=cardbutton)
 
     html = load.TOP
-    html += load.BASE.format(main=content)
+    html += load.BASE.format(content)
     html += load.END
 
     return html

@@ -9,98 +9,63 @@ async def view():
     components = await get_data()
     installed = {}
     not_trackable = {}
-    content = load.SEARCH
+    content = load.SEARCHBAR
 
     for component in components:
         if components[component]['installed']:
             installed[component] = components[component]
 
     if not installed:
-        for component in EXAMPLE:
-            installed[component] = EXAMPLE[component]
+        installed = EXAMPLE
 
     for component in installed:
         if not installed[component]['trackable']:
             not_trackable[component] = installed[component]
             continue
-        update = ''
-        warning = ''
 
-        if not ['embedded']:
-            style = 'float: right;'
-            message = '<i class="fa fa-info" style="color: darkred;"></i>'
-            tooltip = 'Not managable'
-            warning = load.TOOLTIP.format(
-                style=style, message=message, tooltip=tooltip)
+        cardtitle = ''
+
+        if installed[component]['has_update']:
+            cardtitle += load.UPDATEICON
+
+        cardtitle += component
 
         needs_migration = await migration_needed(component)
 
         if needs_migration:
-            style = 'float: right;'
-            message = '<i class="fa fa-info" style="color: darkred;"></i>'
-            tooltip = 'Migration needed'
-            warning = load.TOOLTIP.format(
-                style=style, message=message, tooltip=tooltip)
+            warning = load.TOOLTIP.format('Migration needed')
 
-        if installed[component]['has_update']:
-            update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
+        elif not installed[component]['embedded']:
+            cardtitle += load.TOOLTIP.format('Not managable')
 
-        description = installed[component]['description']
+        cardcontent = load.META.format(
+            type='author', text=installed[component]['author']['login'])
 
-        if description is not None and ':' in description:
-            description = description.split(':')[-1]
+        cardcontent += load.TEXT.format(installed[component]['description'])
 
-        meta = """
-        <p name="author" style="display: none;">{author}</p>
-        """.format(author=installed[component]['author']['login'])
+        cardbutton = load.LINK.format(
+            url='/component/'+component, target='_self',
+            style='', id='', htmlclass='', extra='', text='More info')
 
-        content += """
-            <div class="row">
-            <div class="col s12">
-                <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                    <span class="card-title">{update}{component}{warning}</span>
-                    {meta}
-                    <p>{description}</p>
-                </div>
-                <div class="card-action">
-                    <a href="/component/{component}">More info</a>
-                </div>
-                </div>
-            </div>
-            </div>
-        """.format(update=update, component=component,
-                   description=description, warning=warning, meta=meta)
-
-    style = 'float: right;'
-    message = '<i class="fa fa-info" style="color: darkred;"></i>'
-    tooltip = 'Could not find matching data about these'
-    warning = load.TOOLTIP.format(
-        style=style, message=message, tooltip=tooltip)
+        content += load.BUTTON_CARD.format(
+            title=cardtitle, content=cardcontent, buttons=cardbutton)
 
     if not_trackable:
-        content += """
-            <div class="row">
-            <div class="col s12">
-                <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                <span class="card-title">{warning}</span></a>
-            """.format(warning=warning)
+        lines = ''
+        warning = load.TOOLTIP.format(
+            'Could not find matching data about these')
 
         for component in not_trackable:
+            text = "{component} ({path})".format(
+                component=component,
+                path=installed[component]['local_location'][1:])
 
-            content += """
-                    <li>{component} ({path})</li>
-                """.format(component=component,
-                           path=installed[component]['local_location'][1:])
-        content += """
-                    </div>
-                </div>
-            </div>
-            </div>
-        """
+            lines += load.LINE.format(type='not_trackable', text=text)
+
+        content += load.LIST.format(title=warning, lines=lines)
+
     html = load.TOP
-    html += load.BASE.format(main=content)
+    html += load.BASE.format(content)
     html += load.END
 
     return html

@@ -106,7 +106,7 @@ def run_server(port=9999):
             version = version_file.readlines()
             version = int(version[0].split('.')[1])
 
-        if version <= target:
+        if version < target:
             REASON = 'version'
 
         if not os.path.exists(directory):

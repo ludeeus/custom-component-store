@@ -7,203 +7,192 @@ from componentstore.const import EXAMPLE
 async def view(component):
     """View for single component."""
 
+    data = await component_data(component)
+
+    meta = {}
+    meta['attention'] = data.get('attention')
+    meta['author'] = ''
+    meta['cardbuttons'] = ''
+    meta['cardcontent'] = ''
+    meta['cardtitle'] = ''
+    meta['name'] = component
+    meta['description'] = data.get('description')
+    meta['long_description'] = data.get('long_description')
+    meta['image'] = ''
+    meta['install_or_upgrade'] = 'install'
+    meta['update'] = ''
+    meta['warning'] = ''
+
+    if data:
+        buttons = {}
+        buttons['1'] = ''
+        buttons['2'] = ''
+        buttons['3'] = ''
+        buttons['4'] = ''
+
+        if data['has_update']:
+            meta['cardtitle'] += load.UPDATEICON
+            meta['install_or_upgrade'] = 'upgrade'
+            buttons['3'] = load.LINK.format(
+                url=data['changelog'], target='_blank',
+                style='', id='3', htmlclass='', extra='', text='CHANGELOG')
+
+        if data.get('author'):
+            link = load.LINK.format(
+                url=data['author'].get('html_url'), target='_blank',
+                style='', id='3', htmlclass='', extra='',
+                text='@'+data['author'].get('login'))
+            meta['author'] = load.TEXT.format('Author: '+link)
+
+        buttons['2'] = load.LINK.format(
+            url=data['visit_repo'], target='_blank',
+            style='', id='2', htmlclass='', extra='', text='REPOSITORY')
+
+        if data['installed']:
+            buttons['1'] = load.LINK.format(
+                url='/component/'+meta['name'], target='_self',
+                style='', id='1', htmlclass='', extra='',
+                text='CHECK FOR UPDATE')
+
+            buttons['4'] = load.LINK.format(
+                url='/component/'+meta['name']+'/uninstall', target='_self',
+                style='', id='4', htmlclass='uninstall', extra='',
+                text='UNINSTALL')
+
+        else:
+            buttons['1'] = load.LINK.format(
+                url='#', target='_self',
+                style='', id='isntallbtn', htmlclass='', extra='',
+                text=meta['install_or_upgrade'])
+
+        meta['cardtitle'] += meta['name']
+
+        needs_migration = await migration_needed(component)
+
+        if needs_migration:
+            meta['warning'] = load.TOOLTIP.format('Migration needed')
+            domain = component.split('.')[0]
+            platform = component.split('.')[1]
+
+            meta['attention'] = "You have this installed with the old format."
+            meta['attention'] += load.BREAK
+            meta['attention'] += "You need to move (migrate) it to an embedded platform."
+            meta['attention'] += load.BREAK
+            meta['attention'] += load.BREAK
+            option1 = "Option 1: Change the location of the platform"
+            option1 += load.BREAK
+            option1 += "from: custom_components/{domain}/{platform}.py".format(
+                domain=domain, platform=platform)
+            option1 += load.BREAK
+            option1 += "to: 'custom_components/{platform}/{domain}.py'".format(
+                domain=domain, platform=platform)
+            option1 += load.BREAK
+            meta['attention'] += load.TEXT.format(option1)
+
+            if data['embedded']:
+                meta['attention'] += load.TEXT.format(
+                    "Option 2: Delete the file and reinstall with this site.")
+                meta['attention'] += load.BREAK
+                meta['attention'] += load.TEXT.format(
+                    "Option 3: Click the 'MIGRATE' button.")
+
+                buttons['2'] = load.LINK.format(
+                    url='/component/'+component+'/migrate', target='_self',
+                    style='', id='2', htmlclass='', extra='', text='MIGRATE')
+
+        if not data['embedded']:
+            meta['attention'] = "This can not be installed/used with this site yet."
+            meta['attention'] += load.BREAK
+            meta['attention'] += "The developer of this must first migrate "
+            meta['attention'] += "it to an embedded platform."
+
+        if meta['attention']:
+            buttons['1'] = ''
+            buttons['3'] = ''
+            meta['attention'] = load.ATTENTION.format(meta['attention'])
+        else:
+            meta['attention'] = ''
+
+        if meta['description']:
+            meta['cardcontent'] += load.TEXT.format(meta['description'])
+            meta['cardcontent'] += load.BREAK
+
+        if meta['attention']:
+            meta['cardcontent'] += meta['attention']
+            meta['cardcontent'] += load.BREAK
+
+        if data['image_link']:
+            meta['image'] = load.IMAGE.format(data['image_link'])
+            meta['cardcontent'] += meta['image']
+            meta['cardcontent'] += load.BREAK
+            meta['cardcontent'] += load.BREAK
+
+        if meta['long_description']:
+            meta['cardcontent'] += load.TEXT.format(meta['long_description'])
+            meta['cardcontent'] += load.BREAK
+
+        if meta['author']:
+            meta['cardcontent'] += load.TEXT.format(meta['author'])
+
+        if data['local_version']:
+            text = "Installed version: {}".format(data['local_version'])
+            meta['cardcontent'] += load.TEXT.format(text)
+
+        if data['version']:
+            text = "Published version: {}".format(data['version'])
+            meta['cardcontent'] += load.TEXT.format(text)
+
+        if component == 'sensor.example':
+            buttons['1'] = ''
+
+        meta['cardbuttons'] += buttons['1']
+        meta['cardbuttons'] += buttons['2']
+        meta['cardbuttons'] += buttons['3']
+        meta['cardbuttons'] += buttons['4']
+
+        content = load.BUTTON_CARD.format(
+            title=meta['cardtitle'],
+            content=meta['cardcontent'],
+            buttons=meta['cardbuttons'])
+
+        if data['installed']:
+            meta['install_or_upgrade'] = 'upgrade'
+
+        content += load.MODAL.format(
+            component=meta['name'], type=meta['install_or_upgrade'],
+            text=meta['install_or_upgrade'].upper())
+        content += load.MODAL_SCRIPT
+    else:
+        content = load.NO_TITLE_CARD.format(
+            'Component '+meta['name']+' not found')
+
+    html = load.TOP
+    html += load.BASE.format(content)
+    html += load.END
+
+    return html
+
+
+async def component_data(component):
+    """Return component data."""
+    data = {}
     if component == 'sensor.example':
         components = EXAMPLE
     else:
         components = await get_data()
-
-    if component in components:
-
-        button = '<a href="{target}" {extra}>{text}</a>'
-
-        authordata = components[component].get('author')
-        attention = components[component].get('attention')
-        embedded = components[component].get('embedded')
-        changelog = components[component]['changelog']
-        description = components[component]['description']
-        long_description = components[component].get('long_description')
-        has_update = components[component]['has_update']
-        image_link = components[component].get('image_link')
-        installed = components[component]['installed']
-        installed_version = components[component]['local_version']
-        published_version = components[component]['version']
-        repository = components[component]['visit_repo']
-
-        toast = """ onclick=\"M.toast({html: 'Installing', displayLength: 10000})\""""
-
-        modal = button.format(target='/component/'+component+'/install',
-                              extra='', text='INSTALL')
-
-        button1 = button.format(target='#',
-                                extra=toast+' id=isntallbtn', text='INSTALL')
-
-        button2 = button.format(target=repository, extra='target="_blank"',
-                                text='REPOSITORY')
-
-        button3 = ''
-
-        published_version = "Published version: {}".format(published_version)
-
-        if authordata:
-            author = 'Author: <a href="{}" target="_blank" '.format(authordata.get('html_url'))
-            author += 'class="author">@{}</a></br></br>'.format(authordata.get('login'))
-
-        else:
-            author = ''
-
-        if installed:
-            button1 = button.format(target='/component/'+component,
-                                    extra='', text='CHECK FOR UPDATE')
-
-            toast = """ onclick=\"M.toast({html: 'Uninstalling', displayLength: 10000})\""""
-            button4 = button.format(target='/component/'+component+'/uninstall',
-                                    extra='class="uninstall"'+toast,
-                                    text='UNINSTALL')
-        else:
-            button4 = ''
-
-        if has_update:
-            update = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
-            toast = " onclick='M.toast({html: 'Updating', displayLength: 10000)'"
-
-            modal = button.format(target='/component/'+component+'/update',
-                                  extra=toast, text='UPDATE')
-
-            button1 = button.format(target='#',
-                                    extra=toast+' id=isntallbtn', text='UPDATE')
-
-            button3 = button.format(target=changelog, extra='target="_blank"',
-                                    text='RELEASE NOTES')
-
-        else:
-            update = ''
-
-        if description is not None and ':' in description:
-            description = description.split(':')[-1]
-
-        if installed_version:
-            installed_version = "Installed version: {}</br>".format(installed_version)
-        else:
-            installed_version = ''
-
-        if image_link:
-            image = '</br><img src="{}" class="overview"></br>'.format(image_link)
-        else:
-            image = ''
-
-        if long_description:
-            more_info = '{}</br>'.format(long_description)
-        else:
-            more_info = ''
-
-        needs_migration = await migration_needed(component)
-
-        if needs_migration and attention is None:
-            attention = """
-                You have this installed with the old format.</br>
-                You need to move (migrate) it to an embedded platform.
-                </br></br>
-                <p>Option 1: Change the location of the platform</br>
-                from: 'custom_components/{domain}/{platform}.py'</br>
-                to: 'custom_components/{platform}/{domain}.py'</br></br></p>
-                """.format(domain=component.split('.')[0], platform=component.split('.')[1])
-
-            if embedded:
-                attention += """<p>Option 2: Delete the file and reinstall with this site.</p>
-                    <p></br></br>Option 3: Click the "MIGRATE" button.</p>
-                    """
-                button2 = button.format(target=component+'/migrate', extra='',
-                                        text='MIGRATE')
-            button4 = ''
-
-        if not embedded and attention is None:
-            attention = """
-                This can not be installed/used with this site yet.</br>
-                The developer of this must first migrate it to an embedded platform.
-                </br></br></br><p>{}</br></br>{}{}
-                """.format(description, author, published_version)
-
-        if attention:
-            author = ''
-            button1 = ''
-            button3 = ''
-            description = ''
-            installed_version = ''
-            published_version = ''
-            update = ''
-            attention = """<p class="attention">{}</p></br>""".format(attention)
-        else:
-            attention = ''
-
-        if component == 'sensor.example':
-            button1 = ''
-
-        content = """
-            <div class="row">
-            <div class="col s12">
-                <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                    <span class="card-title">{update}{component}</span>
-                    {attention}
-                    <p>
-                    {description}</br>
-                    {image}</br>
-                    {more_info}
-                    {author}
-                    {installed_version}
-                    {published_version}
-                    </br>
-                    </p>
-                </div>
-                <div class="card-action">
-                    {button1}
-                    {button2}
-                    {button3}
-                    {button4}
-                </div>
-                </div>
-            </div>
-            </div>
-        """.format(update=update, component=component, description=description,
-                   image=image, more_info=more_info, installed_version=installed_version,
-                   author=author, published_version=published_version, button1=button1,
-                   button2=button2, button3=button3, button4=button4, attention=attention)
-
-        if installed:
-            instype = 'upgrade'
-        else:
-            instype = 'install'
-
-        content += """
-        <div id="InstallModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Do <b>not</b> {type} this unless you trust the source.</br>
-            </br>
-            Click the "REPOSITORY" to check out the source, before installing this.</p>
-            This {type} will <b>not</b> change <i>anything</i> in your configuration, you still need to manually update that.</br></br>
-            <div class="card-action">
-                {button}
-            </div>
-        </div>
-
-        </div>
-        """.format(button=modal, type=instype)
-    else:
-        content = """
-          <div class="row">
-            <div class="col s12">
-              <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                  <span class="card-title">Component {component} not found</span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        """.format(component=component)
-
-    html = load.TOP
-    html += load.BASE.format(main=content)
-    html += load.END
-
-    return html
+    try:
+        data['author'] = components[component].get('author')
+        data['attention'] = components[component].get('attention')
+        data['embedded'] = components[component].get('embedded')
+        data['changelog'] = components[component].get('changelog')
+        data['description'] = components[component].get('description')
+        data['long_description'] = components[component].get('long_description')
+        data['has_update'] = components[component].get('has_update')
+        data['image_link'] = components[component].get('image_link')
+        data['installed'] = components[component].get('installed')
+        data['local_version'] = components[component].get('local_version')
+        data['version'] = components[component].get('version')
+        data['visit_repo'] = components[component].get('visit_repo')
+    except Exception:  # pylint: disable=W0703
+        pass
+    return data

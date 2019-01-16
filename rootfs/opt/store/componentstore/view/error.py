@@ -15,24 +15,16 @@ async def view():
     else:
         reason = "An unexpected error occurred."
 
-    content = """
-        <div class="row">
-            <div class="col s12">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Something went wrong</span>
-                        <p>
-                            {reason}</br></br>
-                            code: {reasoncode}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    """.format(reason=reason, reasoncode=REASON)
+    cardcontent = load.TEXT.format(reason)
+    cardcontent += load.BREAK
+    cardcontent += load.BREAK
+    cardcontent = load.TEXT.format('code: '+REASON)
+
+    content = load.BASE_CARD.format(
+        title='Something went wrong', content=cardcontent)
 
     html = load.TOP
-    html += load.BASE.format(main=content)
+    html += load.BASE.format(content)
     html += load.END
 
     return html

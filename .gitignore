@@ -1,1 +1,7 @@
 __pycache__
+pyvenv*
+share
+lib*
+include*
+*.egg*
+bin
