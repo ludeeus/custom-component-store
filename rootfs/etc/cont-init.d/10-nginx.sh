@@ -21,6 +21,7 @@ if [ -z "${NO_AUTH}" ] || [ "${NO_AUTH}" == false ]; then
 
 elif [ "${NO_AUTH}" == true ]; then
   echo "NO_AUTH set to true, skipping authentication."
+  rm /etc/nginx/.htpasswd
 
 else
   echo "Something went wrong."
