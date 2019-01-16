@@ -66,6 +66,8 @@ async def view(component):
                 text=meta['install_or_upgrade'])
 
         meta['cardtitle'] += meta['name']
+        meta['cardtitle'] += load.CARD_MENU.format(
+            repo=data['visit_repo'], component=meta['name'])
 
         needs_migration = await migration_needed(component)
 

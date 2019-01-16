@@ -150,4 +150,46 @@ padding: 8px;
 tr:nth-child(even) {
 background-color: #dddddd;
 }
+
+
+.card-dropdown {
+  float: right;
+  overflow: hidden;
+}
+
+.card-dropdown {
+  border: none;
+  outline: none;
+  padding: 0 16 0 16;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.card-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #546e7af2;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.card-dropdown-content a {
+  float: none;
+  padding: 4 4 4 16;
+  font-size: 16px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.card-dropdown-content a:hover  {
+  color: #ffab40;
+}
+
+.card-dropdown:hover  .card-dropdown-content {
+  display: block;
+}
 """
