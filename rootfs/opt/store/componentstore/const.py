@@ -5,6 +5,7 @@ PATH = '/config'
 
 VERSION = os.environ.get('VERSION')
 DEMO = os.environ.get('DEMO')
+DEMOTEXT = "DEMO (v.{})".format(VERSION)
 
 DOMAINS = ['sensor', 'switch', 'media_player', 'climate', 'light',
            'binary_sensor']

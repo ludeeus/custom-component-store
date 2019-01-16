@@ -1,5 +1,12 @@
 """Base HTML"""
 from componentstore.resources.style import STYLE
+from componentstore.const import DEMO, DEMOTEXT
+
+
+TITLE = "Custom Components"
+
+if DEMO:
+    TITLE = "{} - {}".format(TITLE, DEMOTEXT)
 
 
 SCRIPT = """
@@ -15,7 +22,7 @@ $(document).ready(function(){
 
 TOP = """
 <head>
-    <title>Custom Components</title>
+    <title>{title}</title>
     <link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAAWNJREFUSMfl1btKXUEUBuAPGw1YKJhC0tqIEX0DU6Y44gG18CVsLSTY2oilBNKlSZN0FoLiC9jkCQRtRAQRRfR42SnO2mEY3O5zvIDgD8OePWut/5/bWsN7QgN/ozVekngUmyiytoPJ5xAP4wfuMuJFnET/NnyGuyH+gCWcPTDrInwGsYqrGLuI//468iYOK4hTgRIj+J3YDjBTRT6OmxryoiJ2ObHfYOwhp50OyOtWcBTfrZx8OiP5hvOaM1jDdYztYxaf0Iqxr6nAAu4zkk5u0UVsTx/mQqj0m89X0VuxDRPYzkTu8TNmPIHdzP6l6qAfO8hGYl/BEDa0c6HAcU18rUBqP8Zp9FtYx8BLCpRtG5+7iP/v0FNj/6V981L0dCJwGQ57mOpihVMRUwRHJZra6V4S/dFOpiqBkfBJS0VTDfJi18J3fEyInlzsUpSJVl7Dk0TgWeU6x6s9ODle7cl82/gH8SrATLXsQgIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDEtMTJUMjE6NTA6MjArMDA6MDAMfMVgAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAxLTEyVDIxOjUwOjIwKzAwOjAwfSF93AAAACh0RVh0c3ZnOmJhc2UtdXJpAGZpbGU6Ly8vdG1wL21hZ2ljay1sMWQ4YWhNNAMMbZUAAAAASUVORK5CYII=" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -34,7 +41,7 @@ TOP = """
   <div class="navbar-fixed">
     <nav>
       <div class="nav-wrapper">
-        <a href="/" class="brand-logo">&nbsp;&nbsp;&nbsp;Custom Components</a>
+        <a href="/" class="brand-logo">&nbsp;&nbsp;&nbsp;{title}</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><a href="/">Installed</a></li>
           <li><a href="/store">"The Store"</a></li>
@@ -44,7 +51,7 @@ TOP = """
     </nav>
   </div>
 </header>
-""".format(script=SCRIPT, style=STYLE)
+""".format(title=TITLE, script=SCRIPT, style=STYLE)
 
 
 BASE = """
