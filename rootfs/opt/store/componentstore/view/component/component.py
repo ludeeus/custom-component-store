@@ -98,9 +98,15 @@ async def view(component):
                 meta['attention'] += load.TEXT.format(
                     "Option 3: Click the 'MIGRATE' button.")
 
-                buttons['2'] = load.LINK.format(
-                    url='/component/'+component+'/migrate', target='_self',
-                    style='', id='2', htmlclass='', extra='', text='MIGRATE')
+                if DEMO:
+                    buttons['2'] = load.LINK.format(
+                        url='#', target='_self', style='', id='isntallbtn',
+                        htmlclass='', extra='', text='MIGRATE')
+                else:
+                    buttons['2'] = load.LINK.format(
+                        url='/component/'+component+'/migrate', target='_self',
+                        style='', id='2', htmlclass='', extra='',
+                        text='MIGRATE')
 
         if not data['embedded']:
             meta['attention'] = "This can not be installed/used with this site yet."

@@ -198,7 +198,7 @@ DEMO_MODAL = """
   <div class="modal-content">
     <span class="close">&times;</span>
     <p>This is a demo</p>
-    <p>install, upgrade and unsinstall has been disabled.</p>
+    <p>install, upgrade, migrate and unsinstall has been disabled.</p>
 </div>
 </div>
 """
