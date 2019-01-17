@@ -7,7 +7,6 @@ from componentstore.functions.data import get_data
 
 async def install_component(component):
     """Install component"""
-    print("Installing/updating", component)
     comp_data = await get_data()
     embedded = comp_data[component].get('embedded')
     if embedded:
@@ -31,7 +30,6 @@ async def install_component(component):
 
 async def uninstall_component(component):
     """Uninstall component"""
-    print("Uninstalling", component)
     comp_data = await get_data()
     embedded = comp_data[component].get('embedded')
     if embedded:
@@ -43,7 +41,6 @@ async def uninstall_component(component):
 
 async def migrate_component(component):
     """Migrate component"""
-    print("Migrating", component)
     comp_data = await get_data()
     old_path = PATH + comp_data[component]['local_location']
     new_path = PATH + comp_data[component]['embedded_path']

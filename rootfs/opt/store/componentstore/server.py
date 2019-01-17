@@ -13,7 +13,8 @@ REASON = None
 async def error_view(request):  # pylint: disable=W0613
     """View for about."""
     from componentstore.view.error import view
-    print("Serving error")
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Serving error to", requester)
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
 
@@ -21,7 +22,8 @@ async def error_view(request):  # pylint: disable=W0613
 async def about_view(request):  # pylint: disable=W0613
     """View for about."""
     from componentstore.view.about import view
-    print("Serving about")
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Serving about to", requester)
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
 
@@ -29,7 +31,8 @@ async def about_view(request):  # pylint: disable=W0613
 async def installed_components_view(request):  # pylint: disable=W0613
     """Default/Installed view."""
     from componentstore.view.component.installed import view
-    print("Serving default/Installed view")
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Serving default/Installed view to", requester)
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
 
@@ -38,7 +41,8 @@ async def installed_components_view(request):  # pylint: disable=W0613
 async def the_store_view(request):  # pylint: disable=W0613
     """View for 'The Store'."""
     from componentstore.view.component.the_store import view
-    print("Serving 'The Store'")
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Serving 'The Store' to", requester)
     html = await view()
     return web.Response(body=html, content_type="text/html", charset="utf-8")
 
@@ -46,14 +50,17 @@ async def the_store_view(request):  # pylint: disable=W0613
 async def component_view(request):
     """View for single component."""
     from componentstore.view.component.component import view
+    requester = request.headers.get('X-FORWARDED-FOR', None)
     component = request.match_info['component']
-    print("Serving view for", component)
+    print("Serving view for", component, "to", requester)
     html = await view(component)
     return web.Response(body=html, content_type="text/html", charset="utf-8")
 
 
 async def json(request):
     """Serve the response as JSON."""
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Serving JSON requested by", requester)
     try:
         component = request.match_info['component']
     except:
@@ -67,6 +74,8 @@ async def json(request):
 async def install_component(request):
     """Install component"""
     component = request.match_info['component']
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Installing/updating", component, "requested by", requester)
     await manager.install_component(component)
     raise web.HTTPFound('/component/' + component)
 
@@ -74,6 +83,8 @@ async def install_component(request):
 async def uninstall_component(request):
     """Uninstall component"""
     component = request.match_info['component']
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Uninstalling", component, "requested by", requester)
     await manager.uninstall_component(component)
     raise web.HTTPFound('/component/' + component)
 
@@ -81,6 +92,8 @@ async def uninstall_component(request):
 async def migrate_component(request):
     """Migrate component"""
     component = request.match_info['component']
+    requester = request.headers.get('X-FORWARDED-FOR', None)
+    print("Migrating", component, "requested by", requester)
     await manager.migrate_component(component)
     raise web.HTTPFound('/component/' + component)
 
