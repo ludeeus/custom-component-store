@@ -33,7 +33,7 @@ async def view():
         needs_migration = await migration_needed(component)
 
         if needs_migration:
-            warning = load.TOOLTIP.format('Migration needed')
+            cardtitle += load.TOOLTIP.format('Migration needed')
 
         elif not installed[component]['embedded']:
             cardtitle += load.TOOLTIP.format('Not managable')
