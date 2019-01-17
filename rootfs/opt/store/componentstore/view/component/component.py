@@ -103,11 +103,11 @@ async def view(component):
                     "Option 3: Click the 'MIGRATE' button.")
 
                 if DEMO:
-                    buttons['2'] = load.LINK.format(
+                    buttons['1'] = load.LINK.format(
                         url='#', target='_self', style='', id='installbtn',
                         htmlclass='', extra='', text='MIGRATE')
                 else:
-                    buttons['2'] = load.LINK.format(
+                    buttons['1'] = load.LINK.format(
                         url='/component/'+component+'/migrate', target='_self',
                         style='', id='2', htmlclass='', extra='',
                         text='MIGRATE')
@@ -119,7 +119,8 @@ async def view(component):
             meta['attention'] += "it to an embedded platform."
 
         if meta['attention']:
-            buttons['1'] = ''
+            if not migration_needed and not data['embedded']:
+                buttons['1'] = ''
             buttons['3'] = ''
             meta['attention'] = load.ATTENTION.format(meta['attention'])
         else:
