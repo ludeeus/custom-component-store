@@ -193,7 +193,7 @@ async def component_data(component):
     if component == 'sensor.example':
         components = EXAMPLE
     else:
-        components = await get_data()
+        components = await get_data(True)
     try:
         data['author'] = components[component].get('author')
         data['attention'] = components[component].get('attention')

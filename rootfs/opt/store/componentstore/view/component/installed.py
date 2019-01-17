@@ -6,7 +6,7 @@ import componentstore.resources.html as load
 
 async def view():
     """Default/Installed view."""
-    components = await get_data()
+    components = await get_data(True)
     installed = {}
     not_trackable = {}
     content = load.SEARCHBAR

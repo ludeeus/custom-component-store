@@ -8,9 +8,12 @@ from componentstore.const import DOMAINS, PATH
 DATA = {}
 
 
-async def get_data():  # pylint: disable=R0912,R0914,R0915
+async def get_data(force=False):  # pylint: disable=R0912,R0914,R0915
     """Get data."""
     global DATA  # pylint: disable=W0603
+    if not force:
+        if DATA:
+            return DATA
     try:
         value = {}
         url = 'https://raw.githubusercontent.com/'
@@ -36,7 +39,6 @@ async def get_data():  # pylint: disable=R0912,R0914,R0915
                 if extra_request[item]['version'] is None:
                     continue
                 value[item] = extra_request[item]
-
 
         for item in value:
             local_locations = []
