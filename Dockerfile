@@ -9,6 +9,7 @@ COPY requirements.txt /tmp/
 
 # ENV
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+ENV PYTHONUNBUFFERED=0
 
 # Build
 RUN \
