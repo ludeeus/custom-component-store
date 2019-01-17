@@ -204,7 +204,14 @@ DEMO_MODAL = """
 """
 
 
-UPDATEICON = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
+UPDATEICON = """
+<div class="tooltip" style"background-color: #546e7ad4;">
+  <i class="fa fa-arrow-circle-up">&nbsp;</i>
+  <span class="tooltiptext">Update pening</span>
+</div>
+"""
+
+
 COFFEEICON = '<i class="fa fa-coffee">&nbsp;</i>'
 LINE = '<li id={type}>{text}</li>'
 BREAK = '</br>'
