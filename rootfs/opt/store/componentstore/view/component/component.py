@@ -50,6 +50,10 @@ async def view(component):
         if data['has_update']:
             meta['cardtitle'] += load.UPDATEICON
             meta['install_or_upgrade'] = 'upgrade'
+            buttons['1'] = load.LINK.format(
+                url='#', target='_self',
+                style='', id='installbtn', htmlclass='', extra='',
+                text=meta['install_or_upgrade'])
             buttons['3'] = load.LINK.format(
                 url=data['changelog'], target='_blank',
                 style='', id='3', htmlclass='', extra='', text='CHANGELOG')

@@ -3,10 +3,10 @@ import os
 
 PATH = '/config'
 
-VERSION = '0.8.1'
+VERSION = '1.0.0'
 
 DEMO = os.environ.get('DEMO')
-DEMOTEXT = "DEMO (v.{})".format(VERSION)
+DEMOTEXT = "This is a demo"
 
 DOMAINS = ['sensor', 'switch', 'media_player', 'climate', 'light',
            'binary_sensor']
