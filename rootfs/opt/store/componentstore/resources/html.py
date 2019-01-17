@@ -161,7 +161,7 @@ NO_TITLE_CARD = """
 MODAL_SCRIPT = """
 <script>
 var modal = document.getElementById('InstallModal');
-var btn = document.getElementById("isntallbtn");
+var btn = document.getElementById("installbtn");
 var span = document.getElementsByClassName("close")[0];
 btn.onclick = function() {
   modal.style.display = "block";
@@ -175,7 +175,7 @@ window.onclick = function(event) {
   }
 }
 var modal = document.getElementById('InstallModal');
-var btn = document.getElementById("unisntallbtn");
+var btn = document.getElementById("uninstallbtn");
 var span = document.getElementsByClassName("close")[0];
 btn.onclick = function() {
   modal.style.display = "block";

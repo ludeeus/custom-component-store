@@ -62,7 +62,7 @@ async def view(component):
         else:
             buttons['1'] = load.LINK.format(
                 url='#', target='_self',
-                style='', id='isntallbtn', htmlclass='', extra='',
+                style='', id='installbtn', htmlclass='', extra='',
                 text=meta['install_or_upgrade'])
 
         meta['cardtitle'] += meta['name']
@@ -100,7 +100,7 @@ async def view(component):
 
                 if DEMO:
                     buttons['2'] = load.LINK.format(
-                        url='#', target='_self', style='', id='isntallbtn',
+                        url='#', target='_self', style='', id='installbtn',
                         htmlclass='', extra='', text='MIGRATE')
                 else:
                     buttons['2'] = load.LINK.format(
