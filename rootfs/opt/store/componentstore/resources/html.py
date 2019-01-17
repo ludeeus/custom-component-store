@@ -249,7 +249,7 @@ CARD_MENU = """
   <div class="card-dropdown">
     <i class="fa fa-ellipsis-v"></i>
     <div class="card-dropdown-content">
-      <a href="{repo}/issues/new/choose" target="_blank">Open a issue</a>
+      <a href="{repo}/issues/" target="_blank">Open a issue</a>
       <a href="https://github.com/ludeeus/custom-component-store/issues/new?title={component}&labels=flag&assignee=ludeeus&template=flag.md" target="_blank">Flag this</a>
     </div>
   </div> 
