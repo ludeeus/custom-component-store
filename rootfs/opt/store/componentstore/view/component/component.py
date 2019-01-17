@@ -30,6 +30,23 @@ async def view(component):
         buttons['3'] = ''
         buttons['4'] = ''
 
+        if data['installed']:
+            buttons['1'] = load.LINK.format(
+                url='/component/'+meta['name'], target='_self',
+                style='', id='1', htmlclass='', extra='',
+                text='CHECK FOR UPDATE')
+
+            buttons['4'] = load.LINK.format(
+                url='/component/'+meta['name']+'/uninstall', target='_self',
+                style='', id='4', htmlclass='uninstall', extra='',
+                text='UNINSTALL')
+
+        else:
+            buttons['1'] = load.LINK.format(
+                url='#', target='_self',
+                style='', id='installbtn', htmlclass='', extra='',
+                text=meta['install_or_upgrade'])
+
         if data['has_update']:
             meta['cardtitle'] += load.UPDATEICON
             meta['install_or_upgrade'] = 'upgrade'
@@ -47,23 +64,6 @@ async def view(component):
         buttons['2'] = load.LINK.format(
             url=data['visit_repo'], target='_blank',
             style='', id='2', htmlclass='', extra='', text='REPOSITORY')
-
-        if data['installed']:
-            buttons['1'] = load.LINK.format(
-                url='/component/'+meta['name'], target='_self',
-                style='', id='1', htmlclass='', extra='',
-                text='CHECK FOR UPDATE')
-
-            buttons['4'] = load.LINK.format(
-                url='/component/'+meta['name']+'/uninstall', target='_self',
-                style='', id='4', htmlclass='uninstall', extra='',
-                text='UNINSTALL')
-
-        else:
-            buttons['1'] = load.LINK.format(
-                url='#', target='_self',
-                style='', id='installbtn', htmlclass='', extra='',
-                text=meta['install_or_upgrade'])
 
         meta['cardtitle'] += meta['name']
         meta['cardtitle'] += load.CARD_MENU.format(
@@ -168,9 +168,6 @@ async def view(component):
             title=meta['cardtitle'],
             content=meta['cardcontent'],
             buttons=meta['cardbuttons'])
-
-        if data['installed']:
-            meta['install_or_upgrade'] = 'upgrade'
 
         if DEMO:
             content += load.DEMO_MODAL

@@ -158,6 +158,7 @@ NO_TITLE_CARD = """
 </div>
 """
 
+
 MODAL_SCRIPT = """
 <script>
 var modal = document.getElementById('InstallModal');
@@ -191,6 +192,7 @@ window.onclick = function(event) {
 </script>
 """
 
+
 MODAL = """
 <div id="InstallModal" class="modal">
   <div class="modal-content">
@@ -206,6 +208,7 @@ MODAL = """
 </div>
 </div>
 """
+
 
 DEMO_MODAL = """
 <div id="InstallModal" class="modal">
@@ -230,6 +233,7 @@ COFFEEICON = '<i class="fa fa-coffee">&nbsp;</i>'
 LINE = '<li id={type}>{text}</li>'
 BREAK = '</br>'
 HR = '<hr>'
+
 
 LIST = """
 <div class="row">
