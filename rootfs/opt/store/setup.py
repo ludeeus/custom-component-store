@@ -1,10 +1,11 @@
 """Setup configuration."""
 import setuptools
+from componentstore.const import VERSION
 
 
 setuptools.setup(
     name="componentstore",
-    version="1.0.0",
+    version=VERSION,
     description="",
     long_description="",
     long_description_content_type="text/markdown",

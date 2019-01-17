@@ -193,6 +193,17 @@ MODAL = """
 </div>
 """
 
+DEMO_MODAL = """
+<div id="InstallModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>This is a demo</p>
+    <p>install, upgrade and unsinstall has been disabled.</p>
+</div>
+</div>
+"""
+
+
 UPDATEICON = '<i class="fa fa-arrow-circle-up">&nbsp;</i>'
 COFFEEICON = '<i class="fa fa-coffee">&nbsp;</i>'
 LINE = '<li id={type}>{text}</li>'

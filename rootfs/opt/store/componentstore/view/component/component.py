@@ -1,7 +1,7 @@
 """View for single component."""
 import componentstore.resources.html as load
 from componentstore.functions.data import get_data, migration_needed
-from componentstore.const import EXAMPLE
+from componentstore.const import EXAMPLE, DEMO
 
 
 async def view(component):
@@ -147,6 +147,12 @@ async def view(component):
         if component == 'sensor.example':
             buttons['1'] = ''
 
+        if DEMO:
+            buttons['4'] = load.LINK.format(
+                url='#', target='_self',
+                style='', id='isntallbtn', htmlclass='uninstall', extra='',
+                text='uninstall')
+
         meta['cardbuttons'] += buttons['1']
         meta['cardbuttons'] += buttons['2']
         meta['cardbuttons'] += buttons['3']
@@ -160,9 +166,12 @@ async def view(component):
         if data['installed']:
             meta['install_or_upgrade'] = 'upgrade'
 
-        content += load.MODAL.format(
-            component=meta['name'], type=meta['install_or_upgrade'],
-            text=meta['install_or_upgrade'].upper())
+        if DEMO:
+            content += load.DEMO_MODAL
+        else:
+            content += load.MODAL.format(
+                component=meta['name'], type=meta['install_or_upgrade'],
+                text=meta['install_or_upgrade'].upper())
         content += load.MODAL_SCRIPT
     else:
         content = load.NO_TITLE_CARD.format(

@@ -3,7 +3,8 @@ import os
 
 PATH = '/config'
 
-VERSION = os.environ.get('VERSION')
+VERSION = '0.8.1'
+
 DEMO = os.environ.get('DEMO')
 DEMOTEXT = "DEMO (v.{})".format(VERSION)
 
