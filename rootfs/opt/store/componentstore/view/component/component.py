@@ -153,7 +153,7 @@ async def view(component):
         if component == 'sensor.example':
             buttons['1'] = ''
 
-        if DEMO:
+        if DEMO and data['installed']:
             buttons['4'] = load.LINK.format(
                 url='#', target='_self',
                 style='', id='isntallbtn', htmlclass='uninstall', extra='',
