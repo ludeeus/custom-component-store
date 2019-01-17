@@ -156,7 +156,7 @@ async def view(component):
         if DEMO and data['installed']:
             buttons['4'] = load.LINK.format(
                 url='#', target='_self',
-                style='', id='isntallbtn', htmlclass='uninstall', extra='',
+                style='', id='uninstallbtn', htmlclass='uninstall', extra='',
                 text='uninstall')
 
         meta['cardbuttons'] += buttons['1']
