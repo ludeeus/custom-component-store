@@ -121,11 +121,13 @@ def run_server(port=9999):
 
         if version < target:
             REASON = 'version'
+            print("HA Version", version)
 
         if not os.path.exists(directory):
             os.makedirs(directory)
 
     if REASON is None:
+        print("Custom-component-store is starting.")
         app.router.add_route(
             'GET', r'/', installed_components_view)
         app.router.add_route(
@@ -147,6 +149,7 @@ def run_server(port=9999):
         app.router.add_route(
             'GET', r'/store', the_store_view)
     else:
+        print("There was an issue starting", REASON)
         app.router.add_route(
             'GET', r'/', error_view)
         app.router.add_route(

@@ -89,6 +89,7 @@ async def get_data():  # pylint: disable=R0912,R0914,R0915
         DATA = value
     except Exception as error:  # pylint: disable=W0703
         print("There was an issue getting new data!")
+        print("Cached data will be used to next run.")
         print(error)
     return DATA
 
