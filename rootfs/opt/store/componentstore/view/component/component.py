@@ -29,6 +29,8 @@ async def view(component):
         buttons['2'] = ''
         buttons['3'] = ''
         buttons['4'] = ''
+        buttons['5'] = ''
+        buttons['6'] = ''
 
         if data['installed']:
             buttons['1'] = load.LINK.format(
@@ -36,7 +38,7 @@ async def view(component):
                 style='', id='1', htmlclass='', extra='',
                 text='CHECK FOR UPDATE')
 
-            buttons['4'] = load.LINK.format(
+            buttons['6'] = load.LINK.format(
                 url='/component/'+meta['name']+'/uninstall', target='_self',
                 style='', id='4', htmlclass='uninstall', extra='',
                 text='UNINSTALL')
@@ -54,7 +56,7 @@ async def view(component):
                 url='#', target='_self',
                 style='', id='installbtn', htmlclass='', extra='',
                 text=meta['install_or_upgrade'])
-            buttons['3'] = load.LINK.format(
+            buttons['4'] = load.LINK.format(
                 url=data['changelog'], target='_blank',
                 style='', id='3', htmlclass='', extra='', text='CHANGELOG')
 
@@ -65,7 +67,7 @@ async def view(component):
                 text='@'+data['author'].get('login'))
             meta['author'] = load.TEXT.format('Author: '+link)
 
-        buttons['2'] = load.LINK.format(
+        buttons['3'] = load.LINK.format(
             url=data['visit_repo'], target='_blank',
             style='', id='2', htmlclass='', extra='', text='REPOSITORY')
 
@@ -103,11 +105,11 @@ async def view(component):
                     "Option 3: Click the 'MIGRATE' button.")
 
                 if DEMO:
-                    buttons['1'] = load.LINK.format(
+                    buttons['2'] = load.LINK.format(
                         url='#', target='_self', style='', id='installbtn',
                         htmlclass='', extra='', text='MIGRATE')
                 else:
-                    buttons['1'] = load.LINK.format(
+                    buttons['2'] = load.LINK.format(
                         url='/component/'+component+'/migrate', target='_self',
                         style='', id='2', htmlclass='', extra='',
                         text='MIGRATE')
@@ -119,9 +121,8 @@ async def view(component):
             meta['attention'] += "it to an embedded platform."
 
         if meta['attention']:
-            if not migration_needed and not data['embedded']:
-                buttons['1'] = ''
-            buttons['3'] = ''
+            buttons['1'] = ''
+            buttons['4'] = ''
             meta['attention'] = load.ATTENTION.format(meta['attention'])
         else:
             meta['attention'] = ''
@@ -159,7 +160,7 @@ async def view(component):
             buttons['1'] = ''
 
         if DEMO and data['installed']:
-            buttons['4'] = load.LINK.format(
+            buttons['6'] = load.LINK.format(
                 url='#', target='_self',
                 style='', id='uninstallbtn', htmlclass='uninstall', extra='',
                 text='uninstall')
@@ -168,6 +169,8 @@ async def view(component):
         meta['cardbuttons'] += buttons['2']
         meta['cardbuttons'] += buttons['3']
         meta['cardbuttons'] += buttons['4']
+        meta['cardbuttons'] += buttons['5']
+        meta['cardbuttons'] += buttons['6']
 
         content = load.BUTTON_CARD.format(
             title=meta['cardtitle'],
