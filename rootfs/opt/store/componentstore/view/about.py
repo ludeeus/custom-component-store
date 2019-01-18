@@ -131,6 +131,14 @@ async def view():
 
 #------------------------------------------------------------------------------
 
+    text = load.LINK.format(
+        url='https://www.buymeacoffee.com/ludeeus', target='_blank', style='',
+        id='', htmlclass='', extra='', text=load.COFFEEICON+'Buy me a coffee? :D')
+
+    content += load.NO_TITLE_CARD.format(text)
+
+#------------------------------------------------------------------------------
+
     html = load.TOP
     html += load.BASE.format(content)
     html += load.END
