@@ -6,7 +6,7 @@ import re
 import requests
 
 import redis
-from componentstore.const import DOMAINS, PATH, REDIS_TOPIC
+from componentstore.const import DOMAINS, PATH, REDIS_TOPIC_BASE
 
 REDIS = None
 
@@ -97,7 +97,7 @@ async def get_data(force=False, component=None):  # pylint: disable=R0912,R0914,
         await redis_set(value)
     except Exception as error:  # pylint: disable=W0703
         print("There was an issue getting new data!")
-        print("Cached data will be used to next run.")
+        print("Cached data will be used untill next run.")
         print(error)
     cache = await redis_get()
     if component:
@@ -161,14 +161,16 @@ async def get_local_version(path):
     return return_value
 
 
-async def redis_connect(host=None, port=None):
+async def redis_connect():
     """Connect to redis server."""
+    from componentstore.server import REDIS_HOST, REDIS_PORT
     global REDIS  # pylint: disable=W0603
     print("Connecting to redis server.")
-    if host is None:
+    if REDIS_HOST is None:
         client = redis.StrictRedis(decode_responses=True)
     else:
-        redis.StrictRedis(host=host, port=port, decode_responses=True)
+        client = redis.StrictRedis(
+            host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
     REDIS = client
 
 
@@ -176,7 +178,7 @@ async def redis_set(data):
     """Write data to redis."""
     if REDIS is None:
         await redis_connect()
-    REDIS.set(REDIS_TOPIC, json.dumps(data))
+    REDIS.set(REDIS_TOPIC_BASE, json.dumps(data))
     print("Loaded data to redis.")
 
 
@@ -185,7 +187,7 @@ async def redis_get():
     if REDIS is None:
         await redis_connect()
     try:
-        data = REDIS.get(REDIS_TOPIC)
+        data = REDIS.get(REDIS_TOPIC_BASE)
         data = json.loads(data)
     except Exception as error:  # pylint: disable=W0703
         print(error)

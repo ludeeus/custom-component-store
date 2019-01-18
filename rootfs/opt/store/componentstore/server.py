@@ -8,6 +8,8 @@ from aiohttp import web
 
 PATH = '/config'
 REASON = None
+REDIS_HOST = None
+REDIS_PORT = None
 
 
 async def error_view(request):  # pylint: disable=W0613
@@ -99,9 +101,22 @@ async def migrate_component(request):
     raise web.HTTPFound('/component/' + component)
 
 
-def run_server(port=9999):
+def run_server(port=9999, redis_host=None, redis_port=None):
     """Run the webserver."""
     global REASON  # pylint: disable=W0603
+    global REDIS_HOST # pylint: disable=W0603
+    global REDIS_PORT  # pylint: disable=W0603
+
+    if redis_host is None:
+        REDIS_HOST = os.environ.get(REDIS_HOST)
+    else:
+        REDIS_HOST = redis_host
+
+    if redis_host is None:
+        REDIS_HOST = os.environ.get(REDIS_PORT)
+    else:
+        REDIS_PORT = redis_port
+
     directory = PATH + '/custom_components'
     version_path = PATH + '/.HA_VERSION'
     version = 0
