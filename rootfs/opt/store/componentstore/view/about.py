@@ -103,6 +103,10 @@ async def view():
         {
             'link': 'https://github.com/just-containers/s6-overlay',
             'text': 's6-overlay'
+        },
+        {
+            'link': 'https://redis.io/',
+            'text': 'redis'
         }
     ]
     for link in links:

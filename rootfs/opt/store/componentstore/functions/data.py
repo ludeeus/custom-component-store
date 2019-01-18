@@ -161,31 +161,18 @@ async def get_local_version(path):
     return return_value
 
 
-async def redis_connect():
-    """Connect to redis server."""
-    from componentstore.server import REDIS_HOST, REDIS_PORT
-    global REDIS  # pylint: disable=W0603
-    print("Connecting to redis server.")
-    if REDIS_HOST is None:
-        client = redis.StrictRedis(decode_responses=True)
-    else:
-        client = redis.StrictRedis(
-            host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
-    REDIS = client
-
-
 async def redis_set(data):
     """Write data to redis."""
     if REDIS is None:
-        await redis_connect()
+        redis_connect()
+    print("Writing data to redis.")
     REDIS.set(REDIS_TOPIC_BASE, json.dumps(data))
-    print("Loaded data to redis.")
 
 
 async def redis_get():
     """Get data from redis."""
     if REDIS is None:
-        await redis_connect()
+        redis_connect()
     try:
         data = REDIS.get(REDIS_TOPIC_BASE)
         data = json.loads(data)
@@ -193,3 +180,20 @@ async def redis_get():
         print(error)
         data = None
     return data
+
+def redis_connect():
+    """Connect to redis server."""
+    from componentstore.server import REDIS_HOST, REDIS_PORT
+    global REDIS  # pylint: disable=W0603
+    print("Connecting to redis server.")
+    try:
+        if REDIS_HOST is None:
+            client = redis.StrictRedis(decode_responses=True)
+        else:
+            client = redis.StrictRedis(
+                host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
+        REDIS = client
+        return True
+    except Exception as error:  # pylint: disable=W0703
+        print(error)
+        return False

@@ -12,6 +12,8 @@ async def view():
         reason = "Defined HA configuration path not found."
     elif REASON == 'ha_not_found':
         reason = "Home Assistant installation not found on the specified path."
+    elif REASON == 'redis_conn_error':
+        reason = "There was en error connecting to redis."
     else:
         reason = "An unexpected error occurred."
 

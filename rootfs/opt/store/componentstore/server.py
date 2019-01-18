@@ -103,6 +103,7 @@ async def migrate_component(request):
 
 def run_server(port=9999, redis_host=None, redis_port=None):
     """Run the webserver."""
+    print("Custom-component-store is starting.")
     global REASON  # pylint: disable=W0603
     global REDIS_HOST # pylint: disable=W0603
     global REDIS_PORT  # pylint: disable=W0603
@@ -142,9 +143,12 @@ def run_server(port=9999, redis_host=None, redis_port=None):
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-    if REASON is None:
-        print("Custom-component-store is starting.")
+    redis = data.redis_connect()
 
+    if not redis:
+        REASON = 'redis_conn_error'
+
+    if REASON is None:
         app.router.add_route(
             'GET', r'/', installed_components_view)
         app.router.add_route(
