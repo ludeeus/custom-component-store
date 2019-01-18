@@ -1,19 +1,25 @@
 """Handle data"""
+import json
 import os
 import re
+
 import requests
-from componentstore.const import DOMAINS, PATH
+
+import redis
+from componentstore.const import DOMAINS, PATH, REDIS_TOPIC
+
+REDIS = None
 
 
-DATA = {}
-
-
-async def get_data(force=False):  # pylint: disable=R0912,R0914,R0915
+async def get_data(force=False, component=None):  # pylint: disable=R0912,R0914,R0915
     """Get data."""
-    global DATA  # pylint: disable=W0603
     if not force:
-        if DATA:
-            return DATA
+        cache = await redis_get()
+        if cache:
+            print("Loaded data from redis.")
+            if component:
+                cache = cache[component]
+            return cache
     try:
         value = {}
         url = 'https://raw.githubusercontent.com/'
@@ -88,12 +94,15 @@ async def get_data(force=False):  # pylint: disable=R0912,R0914,R0915
             value[name]['installed'] = True
             value[name]['local_location'] = local_location
 
-        DATA = value
+        await redis_set(value)
     except Exception as error:  # pylint: disable=W0703
         print("There was an issue getting new data!")
         print("Cached data will be used to next run.")
         print(error)
-    return DATA
+    cache = await redis_get()
+    if component:
+        cache = cache[component]
+    return cache
 
 
 async def migration_needed(component):
@@ -150,3 +159,35 @@ async def get_local_version(path):
                 if matcher:
                     return_value = str(matcher.group(2))
     return return_value
+
+
+async def redis_connect(host=None, port=None):
+    """Connect to redis server."""
+    global REDIS  # pylint: disable=W0603
+    print("Connecting to redis server.")
+    if host is None:
+        client = redis.StrictRedis(decode_responses=True)
+    else:
+        redis.StrictRedis(host=host, port=port, decode_responses=True)
+    REDIS = client
+
+
+async def redis_set(data):
+    """Write data to redis."""
+    if REDIS is None:
+        await redis_connect()
+    REDIS.set(REDIS_TOPIC, json.dumps(data))
+    print("Loaded data to redis.")
+
+
+async def redis_get():
+    """Get data from redis."""
+    if REDIS is None:
+        await redis_connect()
+    try:
+        data = REDIS.get(REDIS_TOPIC)
+        data = json.loads(data)
+    except Exception as error:  # pylint: disable=W0703
+        print(error)
+        data = None
+    return data

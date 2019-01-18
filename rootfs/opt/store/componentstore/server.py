@@ -65,9 +65,7 @@ async def json(request):
         component = request.match_info['component']
     except:
         component = None
-    json_data = await data.get_data()
-    if component:
-        json_data = json_data[component]
+    json_data = await data.get_data(component=component)
     return web.json_response(json_data)
 
 
@@ -77,6 +75,7 @@ async def install_component(request):
     requester = request.headers.get('X-FORWARDED-FOR', None)
     print("Installing/updating", component, "requested by", requester)
     await manager.install_component(component)
+    await data.get_data(True)
     raise web.HTTPFound('/component/' + component)
 
 
@@ -86,6 +85,7 @@ async def uninstall_component(request):
     requester = request.headers.get('X-FORWARDED-FOR', None)
     print("Uninstalling", component, "requested by", requester)
     await manager.uninstall_component(component)
+    await data.get_data(True)
     raise web.HTTPFound('/component/' + component)
 
 
@@ -95,6 +95,7 @@ async def migrate_component(request):
     requester = request.headers.get('X-FORWARDED-FOR', None)
     print("Migrating", component, "requested by", requester)
     await manager.migrate_component(component)
+    await data.get_data(True)
     raise web.HTTPFound('/component/' + component)
 
 
@@ -128,6 +129,7 @@ def run_server(port=9999):
 
     if REASON is None:
         print("Custom-component-store is starting.")
+
         app.router.add_route(
             'GET', r'/', installed_components_view)
         app.router.add_route(

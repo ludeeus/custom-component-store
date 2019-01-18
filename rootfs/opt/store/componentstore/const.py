@@ -1,9 +1,12 @@
 """Constants"""
 import os
 
+
 PATH = '/config'
 
 VERSION = '1.0.0'
+
+REDIS_TOPIC = 'custom_component_store_components4'
 
 DEMO = os.environ.get('DEMO')
 DEMOTEXT = "This is a demo"

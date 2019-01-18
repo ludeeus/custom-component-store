@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/usr/bin/execlineb -S0
 ###############################################
 #
 #  Take it down.

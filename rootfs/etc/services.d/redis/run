@@ -5,6 +5,4 @@
 #
 ###############################################
 
-s6-svwait -u -t 5000 /var/run/s6/services/store
-
-exec componentstore
+exec redis-server --protected-mode no

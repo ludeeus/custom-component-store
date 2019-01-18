@@ -199,22 +199,22 @@ async def component_data(component):
     """Return component data."""
     data = {}
     if component == 'sensor.example':
-        components = EXAMPLE
+        component = EXAMPLE['sensor.example']
     else:
-        components = await get_data(True)
+        component = await get_data(component=component)
     try:
-        data['author'] = components[component].get('author')
-        data['attention'] = components[component].get('attention')
-        data['embedded'] = components[component].get('embedded')
-        data['changelog'] = components[component].get('changelog')
-        data['description'] = components[component].get('description')
-        data['long_description'] = components[component].get('long_description')
-        data['has_update'] = components[component].get('has_update')
-        data['image_link'] = components[component].get('image_link')
-        data['installed'] = components[component].get('installed')
-        data['local_version'] = components[component].get('local_version')
-        data['version'] = components[component].get('version')
-        data['visit_repo'] = components[component].get('visit_repo')
+        data['author'] = component.get('author')
+        data['attention'] = component.get('attention')
+        data['embedded'] = component.get('embedded')
+        data['changelog'] = component.get('changelog')
+        data['description'] = component.get('description')
+        data['long_description'] = component.get('long_description')
+        data['has_update'] = component.get('has_update')
+        data['image_link'] = component.get('image_link')
+        data['installed'] = component.get('installed')
+        data['local_version'] = component.get('local_version')
+        data['version'] = component.get('version')
+        data['visit_repo'] = component.get('visit_repo')
     except Exception:  # pylint: disable=W0703
         pass
     return data
