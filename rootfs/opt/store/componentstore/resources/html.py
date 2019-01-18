@@ -228,6 +228,11 @@ UPDATEICON = """
 </div>
 """
 
+RELOADICON = """
+<a href="{}">
+  <i class="fa fa-repeat reload">&nbsp;</i>
+</a>
+"""
 
 COFFEEICON = '<i class="fa fa-coffee">&nbsp;</i>'
 LINE = '<li id={type}>{text}</li>'

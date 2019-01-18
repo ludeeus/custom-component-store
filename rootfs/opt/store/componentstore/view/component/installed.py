@@ -6,10 +6,11 @@ import componentstore.resources.html as load
 
 async def view():
     """Default/Installed view."""
-    components = await get_data(True)
+    components = await get_data()
     installed = {}
     not_trackable = {}
-    content = load.SEARCHBAR
+    content = load.RELOADICON.format('/reloadinstalled')
+    content += load.SEARCHBAR
 
     for component in components:
         if components[component]['installed']:

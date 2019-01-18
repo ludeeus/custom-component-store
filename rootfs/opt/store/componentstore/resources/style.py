@@ -135,6 +135,12 @@ background: transparent;  /* optional: just make scrollbar invisible */
 background: #FF0000;
 }
 
+.reload {
+  font-size: 24px !important;
+  margin-right: -30%;
+  float: right;
+}
+
 table {
 font-family: arial, sans-serif;
 border-collapse: collapse;

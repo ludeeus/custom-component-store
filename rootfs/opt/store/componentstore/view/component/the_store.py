@@ -6,7 +6,8 @@ async def view():
     """View for 'The Store'."""
 
     components = await get_data()
-    content = load.SEARCHBAR
+    content = load.RELOADICON.format('/reloadstore')
+    content += load.SEARCHBAR
 
     for component in components:
         cardtitle = ''

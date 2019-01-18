@@ -102,6 +102,18 @@ async def migrate_component(request):
     raise web.HTTPFound('/component/' + component)
 
 
+async def reloadinstalled(request):  # pylint: disable=W0613
+    """Reload"""
+    await data.get_data(True)
+    raise web.HTTPFound('/')
+
+
+async def reloadstore(request):  # pylint: disable=W0613
+    """Reload"""
+    await data.get_data(True)
+    raise web.HTTPFound('/store')
+
+
 def run_server(port=9999, redis_host=None, redis_port=None, nocache=False):
     """Run the webserver."""
     print("Custom-component-store is starting.")
@@ -179,6 +191,10 @@ def run_server(port=9999, redis_host=None, redis_port=None, nocache=False):
             'GET', r'/json', json)
         app.router.add_route(
             'GET', r'/store', the_store_view)
+        app.router.add_route(
+            'GET', r'/reloadinstalled', reloadinstalled)
+        app.router.add_route(
+            'GET', r'/reloadstore', reloadstore)
     else:
         print("There was an issue starting", REASON)
         app.router.add_route(
