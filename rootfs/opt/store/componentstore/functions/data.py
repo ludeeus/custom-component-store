@@ -13,13 +13,15 @@ REDIS = None
 
 async def get_data(force=False, component=None):  # pylint: disable=R0912,R0914,R0915
     """Get data."""
-    if not force:
-        cache = await redis_get()
-        if cache:
-            print("Loaded data from redis.")
-            if component:
-                cache = cache[component]
-            return cache
+    from componentstore.server import NO_CACHE
+    if not NO_CACHE:
+        if not force:
+            cache = await redis_get()
+            if cache:
+                print("Loaded data from redis.")
+                if component:
+                    cache = cache[component]
+                return cache
     try:
         value = {}
         url = 'https://raw.githubusercontent.com/'
@@ -94,15 +96,20 @@ async def get_data(force=False, component=None):  # pylint: disable=R0912,R0914,
             value[name]['installed'] = True
             value[name]['local_location'] = local_location
 
-        await redis_set(value)
+        if not NO_CACHE:
+            await redis_set(value)
+        else:
+            data = value
     except Exception as error:  # pylint: disable=W0703
         print("There was an issue getting new data!")
         print("Cached data will be used untill next run.")
         print(error)
-    cache = await redis_get()
+    if not NO_CACHE:
+        cache = await redis_get()
+        data = cache
     if component:
-        cache = cache[component]
-    return cache
+        data = data[component]
+    return data
 
 
 async def migration_needed(component):

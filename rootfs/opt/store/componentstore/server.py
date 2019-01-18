@@ -10,6 +10,7 @@ PATH = '/config'
 REASON = None
 REDIS_HOST = None
 REDIS_PORT = None
+NO_CACHE = False
 
 
 async def error_view(request):  # pylint: disable=W0613
@@ -101,22 +102,28 @@ async def migrate_component(request):
     raise web.HTTPFound('/component/' + component)
 
 
-def run_server(port=9999, redis_host=None, redis_port=None):
+def run_server(port=9999, redis_host=None, redis_port=None, nocache=False):
     """Run the webserver."""
     print("Custom-component-store is starting.")
     global REASON  # pylint: disable=W0603
     global REDIS_HOST # pylint: disable=W0603
     global REDIS_PORT  # pylint: disable=W0603
+    global NO_CACHE  # pylint: disable=W0603
 
     if redis_host is None:
-        REDIS_HOST = os.environ.get(REDIS_HOST)
+        REDIS_HOST = os.environ.get('REDIS_HOST')
     else:
         REDIS_HOST = redis_host
 
     if redis_host is None:
-        REDIS_HOST = os.environ.get(REDIS_PORT)
+        REDIS_HOST = os.environ.get('REDIS_PORT')
     else:
         REDIS_PORT = redis_port
+
+    if nocache is None:
+        NO_CACHE = os.environ.get('NO_CACHE')
+    else:
+        NO_CACHE = nocache
 
     directory = PATH + '/custom_components'
     version_path = PATH + '/.HA_VERSION'
@@ -143,10 +150,13 @@ def run_server(port=9999, redis_host=None, redis_port=None):
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-    redis = data.redis_connect()
+    if not NO_CACHE:
+        redis = data.redis_connect()
 
-    if not redis:
-        REASON = 'redis_conn_error'
+        if not redis:
+            REASON = 'redis_conn_error'
+    else:
+        print('Cache disabled...')
 
     if REASON is None:
         app.router.add_route(
