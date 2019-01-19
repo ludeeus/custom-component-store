@@ -1,12 +1,12 @@
 # custom-component-store
 
-**NOTE!: This is in an "alpha" stage, do NOT try to use this unless you know what you are doing, this should not be used or shared.**
-
-![overview](https://i.ibb.co/BszqLXr/demo.gif)
+![overview][image_link]
 
 This tool can help you manage your `custom_components` for Home Assistant.  
 This will only manage the `.py` files for you under `custom_components/`, 
 you still need to manually add/remove entries in `configuration.yaml`.
+
+This uses data generated with [`customjson`][customjson] to present the data.
 
 **Home Assistant version 0.86 or newer is required to use this.**
 
@@ -39,9 +39,32 @@ You get still use this if you are not running Home Assistant in docker, but that
 
 If you use the generic hassio installer, use the instructions for docker.
 
-If you use HassOS use the [Community SSH add-on](https://github.com/hassio-addons/addon-ssh) to run these.
+If you use HassOS use the [Community SSH][ssh_addon] or [Portainer][portainer_addon] add-ons to run these.
 
+## Why docker container?
+
+This is a bundle that contains 3 parts to operate:
+
+- [The webserver (python)][pythonfiles]
+- [Nginx for authentication][nginx]
+- [redis for caching of data][redis]
+
+## Demo
+
+[demo][demo]
+![gif][gif_link]
 
 ## Notice
 
 This is not created, developed, affiliated, supported, maintained or endorsed by Home Assistant.
+
+
+[ssh_addon]: https://github.com/hassio-addons/addon-ssh
+[portainer_addon]: https://github.com/hassio-addons/addon-portainer
+[image_link]: https://i.ibb.co/my9BJNK/image.png
+[gif_link]: https://i.ibb.co/BszqLXr/demo.gif
+[customjson]: https://github.com/ludeeus/customjson
+[demo]: https://componentstoredemo.halfdecent.io/
+[pythonfiles]: https://github.com/ludeeus/custom-component-store/tree/master/rootfs/opt/store/componentstore
+[nginx]: https://www.nginx.com/
+[redis]: https://redis.io/
