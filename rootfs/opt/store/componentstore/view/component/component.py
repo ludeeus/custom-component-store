@@ -7,6 +7,8 @@ from componentstore.const import EXAMPLE, DEMO
 async def view(component):
     """View for single component."""
 
+    content = load.RELOADICON.format('/reloadinstalled')
+
     data = await component_data(component)
 
     meta = {}
@@ -172,7 +174,7 @@ async def view(component):
         meta['cardbuttons'] += buttons['5']
         meta['cardbuttons'] += buttons['6']
 
-        content = load.BUTTON_CARD.format(
+        content += load.BUTTON_CARD.format(
             title=meta['cardtitle'],
             content=meta['cardcontent'],
             buttons=meta['cardbuttons'])
