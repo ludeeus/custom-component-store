@@ -8,6 +8,8 @@ you still need to manually add/remove entries in `configuration.yaml`.
 
 Only components/platforms the are generated with [`customjson`][customjson] can be managed.
 
+Platforms can **only** be managed if they the remote repository are using the new embedded structure that was introduced in 0.86.0
+
 **Home Assistant version 0.86 or newer is required to use this.**
 
 ## Installation on Docker
