@@ -6,7 +6,7 @@ This tool can help you manage your `custom_components` for Home Assistant.
 This will only manage the `.py` files for you under `custom_components/`, 
 you still need to manually add/remove entries in `configuration.yaml`.
 
-This uses data generated with [`customjson`][customjson] to present the data.
+Only components/platforms the are generated with [`customjson`][customjson] can be managed.
 
 **Home Assistant version 0.86 or newer is required to use this.**
 
@@ -30,8 +30,8 @@ When the container is running point your browser to `http://DOCKERHOST:8100`
 
 ENV | Type | Description
 -- | -- | --
-USERNAME | String | Username for HTTPBasicAuth
-PASSWORD | String | Password for HTTPBasicAuth
+USERNAME | String | Username for HTTP Basic Auth
+PASSWORD | String | Password for HTTP Basic Auth
 
 ***
 
@@ -69,3 +69,4 @@ This is not created, developed, affiliated, supported, maintained or endorsed by
 [pythonfiles]: https://github.com/ludeeus/custom-component-store/tree/master/rootfs/opt/store/componentstore
 [nginx]: https://www.nginx.com/
 [redis]: https://redis.io/
+[data]: https://github.com/ludeeus/data/blob/master/custom-component-store/V1/data.json
