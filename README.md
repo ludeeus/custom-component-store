@@ -39,10 +39,14 @@ PASSWORD | String | Password for HTTP Basic Auth
 
 You get still use this if you are not running Home Assistant in docker, but that is the easies way to get started.
 
-### `Hass.io`
+## Installation on Hass.io
+#### Experimental Hass.io Addon
+An experimental [Hass.io addon exists](https://github.com/antoni-k/hassio-addons/tree/master/custom-component-store) for Custom Component store. Keep in mind that it may not be stable.
+
+#### Classic method
+It's possible to use the regular Docker container on Hass.io as well.
 
 If you use the generic `hass.io` installer, use the instructions for docker.
-
 If you use HassOS use the [Community SSH][ssh_addon] or [Portainer][portainer_addon] add-ons to run the docker container.
 
 ## Why docker container?
