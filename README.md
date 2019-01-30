@@ -26,9 +26,9 @@ docker run -d \
 
 `/path/to/HA/config` **must** be the root of your Home Assistant configuration, and this **has** to be `rw`.
 
-if you use `hass.io` this will be `/usr/share/hassio/homeassistant`.
+If you use `hass.io` this will be `/usr/share/hassio/homeassistant`. You can also install the Hass.io Addon instead of the vanilla Docker container.
 
-When the container is running point your browser to `http://DOCKERHOST:8100`
+When the container is running point your browser to `http://HOST:8100`
 
 ENV | Type | Description
 -- | -- | --
@@ -37,13 +37,13 @@ PASSWORD | String | Password for HTTP Basic Auth
 
 ***
 
-**You get still use this if you are not running Home Assistant in docker, but that is the easiest way to get started.**
+**You still get to use this if you are not running Home Assistant in docker, but that is the easiest way to get started.**
 
 ## Installation on Hass.io
-### Experimental Hass.io Addon
-An experimental [Hass.io addon][addon] by [@antoni-k][antonik] exists, _keep in mind that it may not be stable_.
+### Hass.io Addon (simple)
+A [Hass.io addon][addon] made by [@antoni-k][antonik] exists.
 
-### Classic method
+### Old method (advanced)
 It's possible to use the regular Docker container on Hass.io as well.
 
 If you use the generic `hass.io` installer, use the instructions for docker.
@@ -54,7 +54,7 @@ If you use HassOS use the [Community SSH][ssh_addon] or [Portainer][portainer_ad
 
 This is a bundle that contains 3 parts to operate:
 
-- [The webserver (python)][pythonfiles]
+- [The webserver (Python)][pythonfiles]
 - [Nginx for authentication][nginx]
 - [redis for caching of data][redis]
 
