@@ -21,7 +21,7 @@ RUN \
     curl=7.61.1-r1 \
     nginx=1.14.2-r0 \
     python3=3.6.6-r0 \
-    redis=4.0.11-r0 \
+    redis=4.0.12-r0 \
     \
     && pip3 install --no-cache-dir -r /tmp/requirements.txt \
     \
