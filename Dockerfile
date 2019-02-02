@@ -17,7 +17,7 @@ RUN \
     apache2-utils=2.4.38-r3 \
     apk-tools=2.10.1-r0 \
     bash=4.4.19-r1 \
-    ca-certificates=20171114-r3 \
+    ca-certificates=20190108-r0 \
     curl=7.61.1-r1 \
     nginx=1.14.2-r0 \
     python3=3.6.6-r0 \
