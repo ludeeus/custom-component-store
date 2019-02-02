@@ -20,7 +20,7 @@ RUN \
     ca-certificates=20190108-r0 \
     curl=7.61.1-r1 \
     nginx=1.14.2-r0 \
-    python3=3.6.6-r0 \
+    python3=3.6.8-r1 \
     redis=4.0.11-r0 \
     \
     && pip3 install --no-cache-dir -r /tmp/requirements.txt \
