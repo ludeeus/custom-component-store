@@ -10,7 +10,7 @@ import click
 @click.option('--username', '-U', default='pi', help='Username.')
 @click.option('--password', '-P', default='raspberry', help='Password.')
 @click.option('--no_auth', is_flag=True, help='Disable auth.')
-@click.option('--ha_path', default='/config', help='Username.')
+@click.option('--ha_path', default='/config', help='Full path to HA config dir.')
 def cli(port, redishost, redisport, nocache, username, password, no_auth,
         ha_path):
     """CLI for this package."""

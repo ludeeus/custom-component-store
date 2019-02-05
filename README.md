@@ -56,7 +56,11 @@ If you use HassOS use the [Community SSH][ssh_addon] or [Portainer][portainer_ad
 python3 -m pip install componentstore
 ```
 
-Then run it with `componentstore --nocache --username USERNAME --password PASSWORD`
+Then run as the user running HA:
+
+```bash
+componentstore --nocache --username USERNAME --password PASSWORD
+```
 
 ## Demo
 
