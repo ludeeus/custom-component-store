@@ -1,19 +1,10 @@
 language: python
 stages:
-  - linting
   - install
   - deploy
 
 jobs:
   include:
-    #Linting
-    - stage: linting
-      install: pip install pylint
-      name: "Linting with pylint"
-      python: "3.6"
-      script: find . -name \*.py -exec pylint --disable=F0401,W0613,R0913,R0201,R0912,R0915 {} +
-
-
     # Test install the package
     - stage: install
       install: pip install -U pip setuptools wheel
