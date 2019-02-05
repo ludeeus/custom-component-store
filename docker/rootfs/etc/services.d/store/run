@@ -7,4 +7,4 @@
 
 s6-svwait -u -t 5000 /var/run/s6/services/store
 
-exec componentstore
+exec componentstore --no_auth #auth handled by NGINX (for now)

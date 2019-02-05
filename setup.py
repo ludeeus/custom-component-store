@@ -9,7 +9,7 @@ setuptools.setup(
     description="",
     long_description="",
     long_description_content_type="text/markdown",
-    install_requires=['aiohttp', 'requests', 'click', 'redis'],
+    install_requires=['aiohttp', 'requests', 'click', 'redis', 'aiohttp_basicauth'],
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [

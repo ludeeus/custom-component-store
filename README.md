@@ -12,7 +12,7 @@ Platforms can **only** be managed if they the remote repository are using the ne
 
 **Home Assistant version 0.86 or newer is required to use this.**
 
-## Installation on Docker
+## Installation on Docker (Recomended)
 
 ```bash
 docker run -d \
@@ -50,13 +50,13 @@ If you use the generic `hass.io` installer, use the instructions for docker.
 
 If you use HassOS use the [Community SSH][ssh_addon] or [Portainer][portainer_addon] add-ons to run the docker container.
 
-## Why docker container?
+## Manual installation
 
-This is a bundle that contains 3 parts to operate:
+```bash
+python3 -m pip install componentstore
+```
 
-- [The webserver (Python)][pythonfiles]
-- [Nginx for authentication][nginx]
-- [redis for caching of data][redis]
+Then run it with `componentstore --nocache --username USERNAME --password PASSWORD`
 
 ## Demo
 
@@ -79,3 +79,8 @@ This is not created, developed, affiliated, supported, maintained or endorsed by
 [nginx]: https://www.nginx.com/
 [redis]: https://redis.io/
 [data]: https://github.com/ludeeus/data/blob/master/custom-component-store/V1/data.json
+[pypi]: https://pypi.org/project/componentstore/
+
+***
+
+[![BuyMeCoffee](https://camo.githubusercontent.com/cd005dca0ef55d7725912ec03a936d3a7c8de5b5/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6275792532306d6525323061253230636f666665652d646f6e6174652d79656c6c6f772e737667)](https://www.buymeacoffee.com/ludeeus)

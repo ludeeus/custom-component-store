@@ -3,10 +3,11 @@ import os
 
 import componentstore.functions.data as data
 import componentstore.functions.manager as manager
+from componentstore.const import PATH
 from aiohttp import web
+from aiohttp_basicauth import BasicAuthMiddleware
 
 
-PATH = '/config'
 REASON = None
 REDIS_HOST = None
 REDIS_PORT = None
@@ -114,13 +115,19 @@ async def reloadstore(request):  # pylint: disable=W0613
     raise web.HTTPFound('/store')
 
 
-def run_server(port=9999, redis_host=None, redis_port=None, nocache=False):
+def run_server(
+        ha_path, username, password, no_auth, port=9999, redis_host=None,
+        redis_port=None, nocache=False):
     """Run the webserver."""
     print("Custom-component-store is starting.")
     global REASON  # pylint: disable=W0603
     global REDIS_HOST # pylint: disable=W0603
     global REDIS_PORT  # pylint: disable=W0603
     global NO_CACHE  # pylint: disable=W0603
+
+    if ha_path:
+        global PATH  # pylint: disable=W0603
+        PATH = ha_path
 
     if redis_host is None:
         REDIS_HOST = os.environ.get('REDIS_HOST')
@@ -142,7 +149,9 @@ def run_server(port=9999, redis_host=None, redis_port=None, nocache=False):
     version = 0
     target = 86
 
-    app = web.Application()
+    if not no_auth:
+        auth = BasicAuthMiddleware(username=username, password=password)
+    app = web.Application(middlewares=[auth])
 
     if not os.path.exists(version_path):
         REASON = 'ha_not_found'

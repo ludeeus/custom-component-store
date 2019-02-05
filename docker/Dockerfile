@@ -4,9 +4,6 @@ FROM alpine:3.9
 # Copy root filesystem
 COPY rootfs /
 
-# Copy Python requirements file
-COPY requirements.txt /tmp/
-
 # ENV
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 ENV PYTHONUNBUFFERED=0
@@ -23,16 +20,12 @@ RUN \
     redis=4.0.12-r0 \
     python3=3.6.8-r1 \
     \
-    && pip3 install --no-cache-dir -r /tmp/requirements.txt \
+    && pip3 install --no-cache-dir componentstore=1.1.0 \
     \
     && rm -f -r /tmp/* \
     \
     && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz \
-        | tar xvzf - -C / \
-    \
-    && cd /opt/store \
-    \
-    && python3 /opt/store/setup.py install
+        | tar xvzf - -C / 
 
 # Entrypoint
 ENTRYPOINT [ "/init" ]
