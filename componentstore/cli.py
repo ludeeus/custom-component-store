@@ -15,8 +15,8 @@ def cli(port, redishost, redisport, nocache, username, password, no_auth,
         ha_path):
     """CLI for this package."""
     from componentstore.server import run_server
-    run_server(port, redishost, redisport, nocache, username, password,
-               no_auth, ha_path)
+    run_server(ha_path, username, password, no_auth, port, redishost,
+               redisport, nocache)
 
 
 cli()  # pylint: disable=E1120
