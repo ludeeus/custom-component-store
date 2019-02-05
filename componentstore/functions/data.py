@@ -6,7 +6,7 @@ import re
 import requests
 
 import redis
-from componentstore.const import DOMAINS, PATH, REDIS_TOPIC_BASE
+from componentstore.const import DOMAINS, REDIS_TOPIC_BASE
 
 REDIS = None
 
@@ -114,13 +114,14 @@ async def get_data(force=False, component=None):  # pylint: disable=R0912,R0914,
 
 async def migration_needed(component):
     """Return bool if migration is needed."""
+    configpath = os.environ.get('HA_CONFIG_PATH', '/config')
     value = False
     if '.' in component:
         domain = component.split('.')[0]
         platform = component.split('.')[1]
 
         old_format_file_location = "{}/{}/{}/{}.py".format(
-            PATH, 'custom_components', domain, platform)
+            configpath, 'custom_components', domain, platform)
         if os.path.exists(old_format_file_location):
             value = True
     return value
@@ -128,7 +129,8 @@ async def migration_needed(component):
 
 async def get_local_components():
     """Local components and platforms."""
-    base = PATH + '/custom_components/'
+    configpath = os.environ.get('HA_CONFIG_PATH', '/config')
+    base = configpath + '/custom_components/'
     components = []
     accepted = []
     domains = []
@@ -156,7 +158,8 @@ async def get_local_components():
 
 async def get_local_version(path):
     """Return the local version if any."""
-    path = PATH + path
+    configpath = os.environ.get('HA_CONFIG_PATH', '/config')
+    path = configpath + path
     return_value = None
     if os.path.isfile(path):
         with open(path, 'r') as local:
