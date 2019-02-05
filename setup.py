@@ -13,7 +13,7 @@ setuptools.setup(
     url="https://github.com/ludeeus/custom-component-store",
     long_description_content_type="text/markdown",
     install_requires=['aiohttp', 'requests', 'click', 'redis',
-                      'aiohttp_basicauth'],
+                      'aiohttp-basicauth'],
     packages=setuptools.find_packages(),
     package_data={'': ['./static/*']},
     entry_points={
