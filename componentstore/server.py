@@ -125,6 +125,7 @@ def run_server(
     global NO_CACHE  # pylint: disable=W0603
 
     if ha_path:
+
         os.environ["HA_CONFIG_PATH"] = ha_path
 
     if redis_host is None:
@@ -142,8 +143,10 @@ def run_server(
     else:
         NO_CACHE = nocache
 
-    directory = PATH + '/custom_components'
-    version_path = PATH + '/.HA_VERSION'
+    path = os.environ.get('HA_CONFIG_PATH', '/config')
+
+    directory = path + '/custom_components'
+    version_path = path + '/.HA_VERSION'
     version = 0
     target = 86
 
@@ -156,7 +159,7 @@ def run_server(
     if not os.path.exists(version_path):
         REASON = 'ha_not_found'
 
-    elif not os.path.exists(PATH):
+    elif not os.path.exists(path):
         REASON = 'no_path'
 
     else:
