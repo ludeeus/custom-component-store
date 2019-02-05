@@ -2,7 +2,7 @@
 import os
 
 
-PATH = '/config'
+PATH = os.environ.get('HA_CONFIG_PATH', '/config')
 
 VERSION = '1.1.0'
 

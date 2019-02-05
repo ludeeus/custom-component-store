@@ -3,7 +3,6 @@ import os
 
 import componentstore.functions.data as data
 import componentstore.functions.manager as manager
-from componentstore.const import PATH
 from aiohttp import web
 from aiohttp_basicauth import BasicAuthMiddleware
 
@@ -126,8 +125,7 @@ def run_server(
     global NO_CACHE  # pylint: disable=W0603
 
     if ha_path:
-        global PATH  # pylint: disable=W0603
-        PATH = ha_path
+        os.environ["HA_CONFIG_PATH"] = ha_path
 
     if redis_host is None:
         REDIS_HOST = os.environ.get('REDIS_HOST')
@@ -151,7 +149,9 @@ def run_server(
 
     if not no_auth:
         auth = BasicAuthMiddleware(username=username, password=password)
-    app = web.Application(middlewares=[auth])
+        app = web.Application(middlewares=[auth])
+    else:
+        app = web.Application()
 
     if not os.path.exists(version_path):
         REASON = 'ha_not_found'
