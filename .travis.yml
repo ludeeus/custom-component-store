@@ -20,6 +20,7 @@ jobs:
       install: pip install -U pip setuptools wheel
       script: skip
       deploy: &pypi
+        skip_existing: true
         provider: pypi
         user: "$PYPIUSER"
         password: "$PYPIKEY"
