@@ -59,7 +59,7 @@ python3 -m pip install componentstore
 Then run as the user running HA:
 
 ```bash
-componentstore --nocache --username USERNAME --password PASSWORD
+componentstore --nocache --username USERNAME --password PASSWORD --ha_path /home/homeassistant/.homeassistant
 ```
 
 ## Demo
