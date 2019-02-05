@@ -4,7 +4,7 @@ import os
 
 PATH = os.environ.get('HA_CONFIG_PATH', '/config')
 
-VERSION = '1.1.0'
+VERSION = '1.2.0'
 
 REDIS_TOPIC_BASE = 'custom_component_store_'
 

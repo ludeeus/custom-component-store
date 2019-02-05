@@ -20,7 +20,7 @@ RUN \
     redis=4.0.12-r0 \
     python3=3.6.8-r1 \
     \
-    && pip3 install --no-cache-dir componentstore=1.1.0 \
+    && pip3 install --no-cache-dir componentstore=1.2.0 \
     \
     && rm -f -r /tmp/* \
     \
