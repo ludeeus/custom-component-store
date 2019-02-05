@@ -125,7 +125,7 @@ def run_server(
     global NO_CACHE  # pylint: disable=W0603
 
     if ha_path:
-
+        print(ha_path)
         os.environ["HA_CONFIG_PATH"] = ha_path
 
     if redis_host is None:
