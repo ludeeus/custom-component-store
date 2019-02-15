@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED=0
 # Build
 RUN \
     apk add --no-cache \
-    apache2-utils=2.4.38-r1 \
+    apache2-utils=2.4.38-r2 \
     apk-tools=2.10.3-r1 \
     bash=4.4.19-r1 \
     ca-certificates=20190108-r0 \
