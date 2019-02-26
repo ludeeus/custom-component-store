@@ -15,7 +15,7 @@ RUN \
     apk-tools=2.10.3-r1 \
     bash=4.4.19-r1 \
     ca-certificates=20190108-r0 \
-    curl=7.63.0-r0 \
+    curl=7.64.0-r1 \
     nginx=1.14.2-r0 \
     redis=4.0.12-r0 \
     python3=3.6.8-r1 \
