@@ -18,7 +18,7 @@ RUN \
     curl=7.63.0-r0 \
     nginx=1.14.2-r0 \
     redis=4.0.12-r0 \
-    python3=3.6.8-r1 \
+    python3=3.6.8-r2 \
     \
     && pip3 install --no-cache-dir componentstore==1.2.0 \
     \
