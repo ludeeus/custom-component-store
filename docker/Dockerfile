@@ -16,7 +16,7 @@ RUN \
     bash=4.4.19-r1 \
     ca-certificates=20190108-r0 \
     curl=7.63.0-r0 \
-    nginx=1.14.2-r0 \
+    nginx=1.14.2-r1 \
     redis=4.0.12-r0 \
     python3=3.6.8-r1 \
     \
